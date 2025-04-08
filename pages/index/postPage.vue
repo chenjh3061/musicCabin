@@ -2,7 +2,7 @@
 	<view>
 		<view>往期文章</view>
 		<view class="search">
-			<input type="text" :value="searchText.value" 
+			<input type="text" 
 					@focus="isActive = true" @blur="isActive=false" 
 					v-model="searchText" @confirm="doSearch"/>
 			<image class="pic" src="../../static/logo.png" 
