@@ -1,4 +1,6 @@
 import App from './App'
+import store from './store'
+import './utils/request'
 
 // #ifndef VUE3
 import Vue from 'vue'
