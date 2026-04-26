@@ -1,72 +1,111 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
-			"path": "pages/index",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "工具箱",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
-			"path" : "pages/menu",
-			"style" : 
-			{
-				"navigationBarTitleText" : "菜单界面",
-				"enablePullDownRefresh" : true
-			}
-		},
-		{
-			"path": "pages/special",
+			"path": "pages/todo/todo",
 			"style": {
-				"navigationBarTitleText": "特产页面",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "待办事项",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
-			"path" : "pages/userPage",
-			"style" : 
-			{
-				"navigationBarTitleText" : "用户页面",
-				"enablePullDownRefresh" : false
+			"path": "pages/calendar/calendar",
+			"style": {
+				"navigationBarTitleText": "日历提醒",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/items/items",
+			"style": {
+				"navigationBarTitleText": "物品管理",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/items/itemDetail",
+			"style": {
+				"navigationBarTitleText": "物品详情",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/todo/todoEdit",
+			"style": {
+				"navigationBarTitleText": "编辑待办",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/calendar/eventEdit",
+			"style": {
+				"navigationBarTitleText": "编辑事件",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/wagecal/wageCal",
+			"style": {
+				"navigationBarTitleText": "工资计算",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/userPage/userPage",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		}
 	],
 	"tabBar": {
-	    "color": "#7f7f7f",
-	    "selectedColor": "#1a7a6d",  // 和你原样式一致的颜色
-	    "backgroundColor": "#ffffff",
-	    "borderStyle": "white",
-	    "list": [
-	      {
-	        "pagePath": "pages/index",
-	        "text": "首页",
-	        "iconPath": "static/tabs/home.png",
-	        "selectedIconPath": "static/tabs/home-active.png"
-	      },
-	      {
-	        "pagePath": "pages/postPage",
-	        "text": "文字",
-	        "iconPath": "static/tabs/post.png",
-	        "selectedIconPath": "static/tabs/post-active.png"
-	      },
-	      {
-	        "pagePath": "pages/demo1",
-	        "text": "商城",
-	        "iconPath": "static/tabs/mall.png",
-	        "selectedIconPath": "static/tabs/mall-active.png"
-	      },
-	      {
-	        "pagePath": "pages/userPage",
-	        "text": "我的",
-	        "iconPath": "static/tabs/user.png",
-	        "selectedIconPath": "static/tabs/user-active.png"
-	      }
-	    ]
-	  },
+		"color": "#8a9bb0",
+		"selectedColor": "#4A90D9",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/todo/todo",
+				"text": "待办"
+			},
+			{
+				"pagePath": "pages/calendar/calendar",
+				"text": "日历"
+			},
+			{
+				"pagePath": "pages/items/items",
+				"text": "物品"
+			},
+			{
+				"pagePath": "pages/userPage/userPage",
+				"text": "我的"
+			}
+		]
+	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "东江鱼庄", 
-		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#f5f9f8"
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "个人工具箱",
+		"navigationBarBackgroundColor": "#4A90D9",
+		"backgroundColor": "#f2f6fc"
 	},
 	"uniIdRouter": {}
 }

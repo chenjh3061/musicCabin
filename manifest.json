@@ -1,5 +1,5 @@
 {
-    "name" : "uniappV3demo2",
+    "name" : "musicCabin",
     "appid" : "__UNI__F08FBF5",
     "description" : "",
     "versionName" : "1.0.0",
@@ -54,7 +54,14 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "用于提供位置相关功能"
+            }
+        },
+        "requiredPrivateInfos" : [],
+        "cloud" : true
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -68,5 +75,6 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "3"
+    "vueVersion" : "3",
+    "fallbackLocale" : "zh-Hans"
 }
