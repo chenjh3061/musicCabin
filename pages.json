@@ -65,6 +65,14 @@
 			}
 		},
 		{
+			"path": "pages/idong/idong",
+			"style": {
+				"navigationBarTitleText": "动动妹妹",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
 			"path": "pages/userPage/userPage",
 			"style": {
 				"navigationBarTitleText": "我的",

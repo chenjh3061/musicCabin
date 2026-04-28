@@ -112,7 +112,8 @@ const tools = [
   { id: 'calendar', name: '日历提醒', desc: '事件安排', icon: '📅', bg: '#fef6e4', path: '/pages/calendar/calendar' },
   { id: 'items', name: '物品管理', desc: '过期提醒', icon: '📦', bg: '#e8faf0', path: '/pages/items/items' },
   { id: 'valuables', name: '贵重物品', desc: '查找位置', icon: '🔍', bg: '#fde9f4', path: '/pages/items/items?tab=valuable' },
-  { id: 'wagecal', name: '工资计算', desc: '计算后面要多少钱', icon: '🔍', bg: '#929dfd', path: '/pages/wagecal/wageCal?tab=valuable'}
+  { id: 'wagecal', name: '工资计算', desc: '计算后面要多少钱', icon: '🔍', bg: '#929dfd', path: '/pages/wagecal/wageCal?tab=valuable'},
+  { id: 'idong', name: '动动妹妹', desc: '永远想念动', icon: '❤', bg: '#ff0000', path: '/pages/idong/idong'}
 ]
 
 // ---- 数据 ----
