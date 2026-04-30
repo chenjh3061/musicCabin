@@ -79,6 +79,30 @@
 				"navigationBarBackgroundColor": "#4A90D9",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/dailyCheckin/dailyCheckin",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/countDown/countDown",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/randomDecision/randomDecision",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/unitConvertor/unitConvertor",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	],
 	"tabBar": {

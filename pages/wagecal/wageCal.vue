@@ -149,7 +149,11 @@ function loadData() {
       { month: 2, salary: 3855 },
       { month: 3, salary: 3322 },
 	  { month: 4, salary: 9657 },
-	  
+	  { month: 5, salary: 13686 },
+	  { month: 6, salary: 8822 },
+	  { month: 7, salary: 8839 },
+	  { month: 8, salary: 5487 },
+	  { month: 9, salary: 6043 },
     ]
     saveData()
   }
