@@ -97,9 +97,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { addDoc, updateDoc, getDocs, COLLECTIONS } from '../../utils/db.js'
+import { getTodos, saveTodos } from '../../utils/storage.js'
 import { formatDate, PRIORITY_MAP, showToast } from '../../utils/helper.js'
 
 const saving = ref(false)
@@ -146,33 +146,29 @@ function onDateChange(e) {
   form.value.dueDate = new Date(dateStr + 'T23:59:59').getTime()
 }
 
-onLoad(async (options) => {
+onLoad((options) => {
   if (options && options.id) {
     isEdit.value = true
     editId.value = options.id
     uni.setNavigationBarTitle({ title: '编辑待办' })
-    // 从本地缓存读取
     try {
-      const raw = uni.getStorageSync(`cache_${COLLECTIONS.TODO}`)
-      if (raw) {
-        const list = JSON.parse(raw)
-        const item = list.find(i => i._id === options.id)
-        if (item) {
-          form.value = {
-            title: item.title || '',
-            desc: item.desc || '',
-            priority: item.priority || 'medium',
-            dueDate: item.dueDate || null,
-            tags: item.tags || [],
-            done: item.done || false
-          }
+      const list = getTodos()
+      const item = list.find(i => i._id === options.id)
+      if (item) {
+        form.value = {
+          title: item.title || '',
+          desc: item.desc || '',
+          priority: item.priority || 'medium',
+          dueDate: item.dueDate || null,
+          tags: item.tags || [],
+          done: item.done || false
         }
       }
     } catch (e) {}
   }
 })
 
-async function save() {
+function save() {
   if (!form.value.title.trim()) {
     showToast('请输入任务标题')
     return
@@ -180,11 +176,23 @@ async function save() {
   saving.value = true
   try {
     const data = { ...form.value, title: form.value.title.trim() }
+    const list = getTodos()
     if (isEdit.value && editId.value) {
-      await updateDoc(COLLECTIONS.TODO, editId.value, data)
+      const idx = list.findIndex(i => i._id === editId.value)
+      if (idx !== -1) {
+        list[idx] = { ...list[idx], ...data, updatedAt: Date.now() }
+      }
+      saveTodos(list)
       showToast('已更新')
     } else {
-      await addDoc(COLLECTIONS.TODO, data)
+      const newItem = {
+        _id: `local_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+        ...data,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }
+      list.unshift(newItem)
+      saveTodos(list)
       showToast('已添加 ✅')
     }
     setTimeout(() => uni.navigateBack(), 500)

@@ -81,7 +81,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getDocs, updateDoc, deleteDoc, COLLECTIONS } from '../../utils/db.js'
+import { getTodos, saveTodos } from '../../utils/storage.js'
 import { formatDate, PRIORITY_MAP, daysFromNow, showToast, showConfirm } from '../../utils/helper.js'
 
 const allTodos = ref([])
@@ -99,33 +99,31 @@ const filteredTodos = computed(() => {
   return allTodos.value
 })
 
-async function loadTodos() {
-  const res = await getDocs(COLLECTIONS.TODO)
-  if (res.success) {
-    allTodos.value = (res.data || []).sort((a, b) => {
-      // 排序：未完成优先，再按优先级，再按截止日期
-      if (a.done !== b.done) return a.done ? 1 : -1
-      const pOrder = { high: 0, medium: 1, low: 2 }
-      const pDiff = (pOrder[a.priority] || 1) - (pOrder[b.priority] || 1)
-      if (pDiff !== 0) return pDiff
-      return (a.dueDate || 9999999999999) - (b.dueDate || 9999999999999)
-    })
-  }
+function loadTodos() {
+  const list = getTodos()
+  allTodos.value = list.sort((a, b) => {
+    // 排序：未完成优先，再按优先级，再按截止日期
+    if (a.done !== b.done) return a.done ? 1 : -1
+    const pOrder = { high: 0, medium: 1, low: 2 }
+    const pDiff = (pOrder[a.priority] || 1) - (pOrder[b.priority] || 1)
+    if (pDiff !== 0) return pDiff
+    return (a.dueDate || 9999999999999) - (b.dueDate || 9999999999999)
+  })
 }
 
 onShow(() => { loadTodos() })
 
-async function toggleDone(todo) {
-  await updateDoc(COLLECTIONS.TODO, todo._id, { done: !todo.done })
+function toggleDone(todo) {
   todo.done = !todo.done
+  saveTodos(allTodos.value)
   showToast(todo.done ? '已完成 ✅' : '已撤销完成')
 }
 
 async function deleteTodo(todo) {
   const ok = await showConfirm(`确认删除「${todo.title}」？`)
   if (!ok) return
-  await deleteDoc(COLLECTIONS.TODO, todo._id)
   allTodos.value = allTodos.value.filter(t => t._id !== todo._id)
+  saveTodos(allTodos.value)
   showToast('已删除')
 }
 

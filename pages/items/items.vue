@@ -125,7 +125,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onShow, onLoad } from '@dcloudio/uni-app'
-import { getDocs, deleteDoc, COLLECTIONS } from '../../utils/db.js'
+import { getItems, saveItems } from '../../utils/storage.js'
 import { formatDate, getExpiryStatus, daysFromNow, showToast, showConfirm } from '../../utils/helper.js'
 
 const activeTab = ref('all')
@@ -194,9 +194,8 @@ function getTypeBg(type) {
   return map[type] || '#e3f2fd'
 }
 
-async function loadItems() {
-  const res = await getDocs(COLLECTIONS.ITEM)
-  if (res.success) allItems.value = res.data || []
+function loadItems() {
+  allItems.value = getItems()
 }
 
 onShow(() => { loadItems() })
@@ -217,8 +216,8 @@ function onSearch() {}
 async function deleteItem(item) {
   const ok = await showConfirm(`删除「${item.name}」？`)
   if (!ok) return
-  await deleteDoc(COLLECTIONS.ITEM, item._id)
   allItems.value = allItems.value.filter(i => i._id !== item._id)
+  saveItems(allItems.value)
   showToast('已删除')
 }
 

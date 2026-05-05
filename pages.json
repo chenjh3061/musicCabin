@@ -83,31 +83,41 @@
 		{
 			"path": "pages/dailyCheckin/dailyCheckin",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "每日打卡",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/countDown/countDown",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "倒数日",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/randomDecision/randomDecision",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "随机决定",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/unitConvertor/unitConvertor",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "单位换算",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/settings/settings",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#4A90D9",
+				"navigationBarTextStyle": "white"
 			}
 		}
 	],

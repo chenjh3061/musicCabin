@@ -122,7 +122,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { addDoc, updateDoc, COLLECTIONS } from '../../utils/db.js'
+import { getItems, saveItems } from '../../utils/storage.js'
 import { formatDate, showToast } from '../../utils/helper.js'
 
 const saving = ref(false)
@@ -174,37 +174,46 @@ onLoad((options) => {
     editId.value = options.id
     uni.setNavigationBarTitle({ title: '编辑物品' })
     try {
-      const raw = uni.getStorageSync(`cache_${COLLECTIONS.ITEM}`)
-      if (raw) {
-        const list = JSON.parse(raw)
-        const item = list.find(i => i._id === options.id)
-        if (item) {
-          form.value = {
-            name: item.name || '',
-            type: item.type || 'expiry',
-            location: item.location || '',
-            expiryDate: item.expiryDate || null,
-            purchaseDate: item.purchaseDate || null,
-            note: item.note || '',
-            quantity: item.quantity || '',
-            icon: item.icon || '💎'
-          }
+      const list = getItems()
+      const item = list.find(i => i._id === options.id)
+      if (item) {
+        form.value = {
+          name: item.name || '',
+          type: item.type || 'expiry',
+          location: item.location || '',
+          expiryDate: item.expiryDate || null,
+          purchaseDate: item.purchaseDate || null,
+          note: item.note || '',
+          quantity: item.quantity || '',
+          icon: item.icon || '💎'
         }
       }
     } catch (e) {}
   }
 })
 
-async function save() {
+function save() {
   if (!form.value.name.trim()) { showToast('请输入物品名称'); return }
   saving.value = true
   try {
     const data = { ...form.value, name: form.value.name.trim() }
+    const list = getItems()
     if (isEdit.value && editId.value) {
-      await updateDoc(COLLECTIONS.ITEM, editId.value, data)
+      const idx = list.findIndex(i => i._id === editId.value)
+      if (idx !== -1) {
+        list[idx] = { ...list[idx], ...data, updatedAt: Date.now() }
+      }
+      saveItems(list)
       showToast('已更新')
     } else {
-      await addDoc(COLLECTIONS.ITEM, data)
+      const newItem = {
+        _id: `local_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+        ...data,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }
+      list.unshift(newItem)
+      saveItems(list)
       showToast('物品已记录 ✅')
     }
     setTimeout(() => uni.navigateBack(), 500)
