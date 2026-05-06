@@ -83,52 +83,48 @@ onMounted(loadMealOptions)
 </script>
 
 <style scoped>
-.music-random {
-  background: #FDF9F5;
-  padding-bottom: 80rpx;
-}
+.music-random { background: #EDF4FB; min-height: 100vh; padding-bottom: 80rpx; }
 .hero {
-  background: linear-gradient(115deg, #E5D5C0, #DCC8B2);
-  padding: 60rpx 0 40rpx;
-  text-align: center;
-  border-radius: 0 0 48rpx 48rpx;
+  background: linear-gradient(145deg, #3A7FD5 0%, #29ACAB 100%);
+  padding: 60rpx 0 44rpx; text-align: center;
+  border-radius: 0 0 56rpx 56rpx;
+  box-shadow: 0 10rpx 36rpx rgba(42,100,180,0.18);
 }
-.hero-icon { font-size: 80rpx; display: block; margin-bottom: 12rpx; }
-.hero-title { font-size: 40rpx; font-weight: 600; color: #5F4C3A; letter-spacing: 4rpx; }
-.hero-sub { font-size: 24rpx; color: #8F735C; margin-top: 6rpx; }
+.hero-icon { font-size: 72rpx; display: block; margin-bottom: 12rpx; }
+.hero-title { font-size: 40rpx; font-weight: 700; color: #fff; letter-spacing: 4rpx; display: block; }
+.hero-sub { font-size: 24rpx; color: rgba(255,255,255,0.8); margin-top: 6rpx; display: block; }
+
 .card {
-  background: rgba(255,252,248,0.95);
-  backdrop-filter: blur(12px);
-  border-radius: 48rpx;
-  margin: 24rpx 24rpx;
-  padding: 32rpx;
+  background: rgba(255,255,255,0.95); border-radius: 32rpx;
+  margin: 20rpx 24rpx; padding: 28rpx 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(74,144,217,0.08);
+  border: 1rpx solid #D6E9F7;
 }
-.card-title { font-size: 32rpx; font-weight: 500; color: #7A624E; margin-bottom: 28rpx; letter-spacing: 2rpx; }
+.card-title { font-size: 30rpx; font-weight: 700; color: #1E3A5C; margin-bottom: 24rpx; }
+
 .result-area {
-  background: #F8F2EA;
-  border-radius: 80rpx;
-  padding: 28rpx 20rpx;
-  text-align: center;
-  font-size: 48rpx;
-  font-weight: 600;
-  color: #B08C6E;
-  margin: 20rpx 0;
-  transition: all 0.2s;
+  background: #EEF4FA; border-radius: 60rpx;
+  padding: 28rpx 20rpx; text-align: center;
+  font-size: 48rpx; font-weight: 700; color: #2F72C0;
+  margin: 18rpx 0; transition: all 0.2s;
+  border: 1rpx solid #D6E9F7;
 }
 .result-area.flip { transform: rotateY(180deg); }
+.result-area.large { font-size: 38rpx; }
+
 .music-btn {
-  background: #EADBC6;
-  color: #6F5540;
-  border-radius: 60rpx;
-  font-size: 28rpx;
-  padding: 20rpx;
-  width: 60%;
-  margin: 0 auto;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF);
+  color: #fff; border-radius: 60rpx;
+  font-size: 28rpx; padding: 20rpx; width: 62%;
+  margin: 4rpx auto;
+  box-shadow: 0 4rpx 18rpx rgba(74,144,217,0.30);
+  display: block; letter-spacing: 1rpx; border: none;
 }
-.range-row { display: flex; justify-content: center; gap: 20rpx; margin-bottom: 20rpx; }
-.range-input { background: #F8F2EA; border-radius: 32rpx; padding: 16rpx 24rpx; width: 140rpx; text-align: center; }
-.music-textarea { background: #F8F2EA; border-radius: 32rpx; padding: 20rpx; font-size: 28rpx; margin-bottom: 16rpx; width: 100%; }
-.small-save { background: #E8DDD0; border-radius: 40rpx; font-size: 24rpx; padding: 12rpx; margin-bottom: 20rpx; width: 200rpx; }
-.result-area.large { font-size: 40rpx; }
+.range-row { display: flex; justify-content: center; gap: 20rpx; margin-bottom: 20rpx; align-items: center; }
+.range-input { background: #EEF4FA; border-radius: 24rpx; padding: 14rpx 18rpx; width: 130rpx; text-align: center; border: 1rpx solid #D6E9F7; color: #1E3A5C; font-size: 28rpx; }
+.music-textarea { background: #EEF4FA; border-radius: 24rpx; padding: 18rpx; font-size: 26rpx; margin-bottom: 16rpx; width: 100%; box-sizing: border-box; border: 1rpx solid #D6E9F7; color: #1E3A5C; }
+.small-save {
+  background: #E3F2FC; border-radius: 40rpx; font-size: 24rpx; padding: 12rpx;
+  margin-bottom: 20rpx; width: 200rpx; color: #4A90D9; border: none; display: block; text-align: center;
+}
 </style>

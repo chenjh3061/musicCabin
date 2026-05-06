@@ -23,15 +23,15 @@
       <view class="card-title">🔔 提醒旋律</view>
       <view class="setting-row">
         <text>每日晨间汇总</text>
-        <switch :checked="dailyReminder" @change="toggleDailyReminder" color="#D6B8A8" />
+        <switch :checked="dailyReminder" @change="toggleDailyReminder" color="#4A90D9" />
       </view>
       <view class="setting-row">
         <text>物品过期提醒</text>
-        <switch :checked="expiryReminder" @change="toggleExpiryReminder" color="#D6B8A8" />
+        <switch :checked="expiryReminder" @change="toggleExpiryReminder" color="#4A90D9" />
       </view>
       <view class="setting-row">
         <text>纪念日提醒</text>
-        <switch :checked="countdownReminder" @change="toggleCountdownReminder" color="#D6B8A8" />
+        <switch :checked="countdownReminder" @change="toggleCountdownReminder" color="#4A90D9" />
       </view>
       <button class="request-btn" @click="requestSubscribe">请求通知授权</button>
       <view class="tip">注：订阅消息需小程序模板ID，此处为UI示意</view>
@@ -102,28 +102,38 @@ onMounted(loadSettings)
 </script>
 
 <style scoped>
-.music-settings { background: #FDF9F5; padding-bottom: 80rpx; }
+.music-settings { background: #EDF4FB; min-height: 100vh; padding-bottom: 80rpx; }
+
 .settings-header {
-  background: linear-gradient(135deg, #E5D5C0, #DAC6B0);
-  padding: 60rpx 0 50rpx;
-  text-align: center;
-  border-radius: 0 0 48rpx 48rpx;
+  background: linear-gradient(145deg, #3A7FD5 0%, #29ACAB 100%);
+  padding: 60rpx 0 50rpx; text-align: center;
+  border-radius: 0 0 56rpx 56rpx;
+  box-shadow: 0 10rpx 36rpx rgba(42,100,180,0.18);
 }
 .header-icon { font-size: 60rpx; display: block; }
-.header-title { font-size: 44rpx; font-weight: 600; color: #5F4C3A; margin: 8rpx 0; }
-.header-sub { font-size: 24rpx; color: #8F735C; }
+.header-title { font-size: 44rpx; font-weight: 700; color: #fff; margin: 10rpx 0; display: block; letter-spacing: 2rpx; }
+.header-sub { font-size: 24rpx; color: rgba(255,255,255,0.78); display: block; }
+
 .card {
-  background: rgba(255,252,248,0.95);
-  backdrop-filter: blur(12px);
-  border-radius: 48rpx;
-  margin: 24rpx;
-  padding: 32rpx;
+  background: #fff; border-radius: 32rpx; margin: 20rpx 24rpx; padding: 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(74,144,217,0.08); border: 1rpx solid #D6E9F7;
 }
-.card-title { font-size: 32rpx; font-weight: 500; color: #7A624E; margin-bottom: 28rpx; }
-.setting-row { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid #F0E4D8; }
-.soft-btn { background: #EADBC6; border-radius: 60rpx; font-size: 26rpx; padding: 10rpx 28rpx; margin: 0; }
-.tip { font-size: 22rpx; color: #CBB9AB; margin-top: 24rpx; }
-.request-btn { background: #D6B8A8; color: white; border-radius: 60rpx; margin-top: 24rpx; width: 60%; margin-left: auto; margin-right: auto; }
+.card-title { font-size: 30rpx; font-weight: 700; color: #1E3A5C; margin-bottom: 22rpx; display: block; }
+.setting-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20rpx 0; border-bottom: 1rpx solid #EEF4FA; font-size: 28rpx; color: #1E3A5C;
+}
+.soft-btn {
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF);
+  color: #fff; border-radius: 60rpx; font-size: 26rpx; padding: 10rpx 28rpx;
+  margin: 0; border: none;
+}
+.tip { font-size: 22rpx; color: #8FAEC8; margin-top: 20rpx; }
+.request-btn {
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF); color: #fff;
+  border-radius: 60rpx; margin-top: 24rpx; width: 65%;
+  margin-left: auto; margin-right: auto; border: none; display: block;
+}
 .about { text-align: center; }
-.about-text { font-size: 26rpx; color: #A28872; line-height: 1.5; }
+.about-text { font-size: 26rpx; color: #5A7A9A; line-height: 1.8; }
 </style>

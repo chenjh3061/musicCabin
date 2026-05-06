@@ -1,56 +1,288 @@
-/* 音乐舒缓主题 - 全局变量与混合 */
-$primary-light: #FDF9F5;
-$primary-card: rgba(255,252,248,0.96);
-$card-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.04), 0 2rpx 6rpx rgba(0, 0, 0, 0.02);
-$text-main: #5C4A3A;
-$text-muted: #8E7A6B;
-$accent: #D6B8A8;
-$border-light: #F0E4D8;
-$btn-bg: #EADBC6;
-$btn-text: #6F5540;
+/* =====================================================
+   musicCabin 全局主题 - 蓝绿舒缓音乐风格
+   如同清澈溪流 · 钢琴晨曲 · 薄雾山间
+   ===================================================== */
 
-/* 全局页面背景 */
+/* ---------- 主色调 ---------- */
+$color-primary:       #4A90D9;   /* 主蓝 */
+$color-primary-light: #6EB3F0;   /* 浅蓝 */
+$color-primary-deep:  #2F72C0;   /* 深蓝 */
+$color-teal:          #3ABFBF;   /* 青绿 */
+$color-teal-light:    #6DCECE;   /* 浅青 */
+$color-mint:          #A8DDD9;   /* 薄荷绿 */
+
+/* ---------- 背景色 ---------- */
+$bg-page:             #F0F6FB;   /* 页面底色：淡蓝白 */
+$bg-card:             rgba(255, 255, 255, 0.93); /* 卡片白 */
+$bg-input:            #EEF4FA;   /* 输入框背景 */
+$bg-tag:              #E3F2FC;   /* 标签背景 */
+$bg-hero-from:        #3A7FD5;   /* 顶部渐变起始 */
+$bg-hero-to:          #2CAEA8;   /* 顶部渐变结束（蓝→青） */
+
+/* ---------- 文字颜色 ---------- */
+$text-primary:   #1E3A5C;   /* 深蓝主文字 */
+$text-secondary: #5A7A9A;   /* 次级文字 */
+$text-muted:     #8FAEC8;   /* 占位/辅助文字 */
+$text-on-hero:   #FFFFFF;   /* Hero区白色文字 */
+$text-link:      $color-primary;
+
+/* ---------- 边框 & 分隔 ---------- */
+$border-light:  #D6E9F7;
+$border-normal: #B8D4EC;
+$divider:       #E2EFF8;
+
+/* ---------- 状态色 ---------- */
+$color-success: #48C78E;
+$color-warn:    #F5A623;
+$color-danger:  #E05C5C;
+
+/* ---------- 阴影 ---------- */
+$shadow-sm:   0 2rpx 10rpx rgba(74, 144, 217, 0.08);
+$shadow-card: 0 6rpx 24rpx rgba(74, 144, 217, 0.10), 0 2rpx 6rpx rgba(0, 0, 0, 0.03);
+$shadow-fab:  0 8rpx 32rpx rgba(74, 144, 217, 0.38);
+$shadow-hero: 0 12rpx 40rpx rgba(42, 100, 180, 0.18);
+
+/* ---------- 圆角 ---------- */
+$radius-sm:     16rpx;
+$radius-base:   24rpx;
+$radius-lg:     40rpx;
+$radius-xl:     60rpx;
+$radius-circle: 50%;
+
+/* ---------- 间距 ---------- */
+$spacing-xs:  8rpx;
+$spacing-sm:  16rpx;
+$spacing-md:  24rpx;
+$spacing-lg:  32rpx;
+$spacing-xl:  48rpx;
+
+/* =====================================================
+   全局 page 背景
+   ===================================================== */
 page {
-  background: $primary-light;
+  background: $bg-page;
   font-family: -apple-system, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: $text-primary;
 }
 
-/* 通用卡片样式 */
+/* =====================================================
+   通用卡片
+   ===================================================== */
 .music-card {
-  background: $primary-card;
-  backdrop-filter: blur(20px);
-  border-radius: 48rpx;
-  margin: 24rpx;
-  padding: 32rpx;
-  box-shadow: $card-shadow;
+  background: $bg-card;
+  border-radius: $radius-lg;
+  margin: $spacing-md $spacing-md;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
   transition: all 0.2s;
+  border: 1rpx solid $border-light;
 }
 
-/* 通用按钮 */
+/* =====================================================
+   通用按钮（主色）
+   ===================================================== */
 .music-btn {
-  background: $btn-bg;
-  color: $btn-text;
-  border-radius: 60rpx;
+  background: linear-gradient(135deg, $color-primary, $color-teal);
+  color: #fff;
+  border-radius: $radius-xl;
   font-size: 28rpx;
-  padding: 20rpx;
-  width: 60%;
+  padding: 22rpx 0;
+  width: 62%;
   margin: 16rpx auto;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  box-shadow: $shadow-fab;
   text-align: center;
-}
-
-/* 通用输入框 */
-.music-input, textarea, picker {
-  background: #F8F2EA;
-  border-radius: 32rpx;
-  padding: 16rpx 24rpx;
-  font-size: 28rpx;
   border: none;
+  display: block;
+  letter-spacing: 2rpx;
+}
+.music-btn:active {
+  opacity: 0.88;
+  transform: scale(0.98);
 }
 
-/* 分割线 */
+/* =====================================================
+   通用输入框
+   ===================================================== */
+.music-input {
+  background: $bg-input;
+  border-radius: $radius-base;
+  padding: 18rpx 24rpx;
+  font-size: 28rpx;
+  border: 1rpx solid $border-light;
+  color: $text-primary;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+textarea.music-textarea {
+  background: $bg-input;
+  border-radius: $radius-base;
+  padding: 16rpx 24rpx;
+  font-size: 26rpx;
+  border: 1rpx solid $border-light;
+  color: $text-primary;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   通用英雄区（页面顶部渐变）
+   ===================================================== */
+.music-hero {
+  background: linear-gradient(135deg, $bg-hero-from 0%, $bg-hero-to 100%);
+  padding: 60rpx 32rpx 48rpx;
+  border-radius: 0 0 $radius-xl $radius-xl;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: $shadow-hero;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30rpx;
+    left: -10%;
+    right: -10%;
+    height: 60rpx;
+    background: $bg-page;
+    border-radius: 50%;
+  }
+}
+.music-hero .hero-icon {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+.music-hero .hero-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: $text-on-hero;
+  display: block;
+  letter-spacing: 3rpx;
+}
+.music-hero .hero-sub {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.78);
+  display: block;
+  margin-top: 10rpx;
+}
+
+/* =====================================================
+   通用卡片头部
+   ===================================================== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
+}
+.add-btn {
+  font-size: 26rpx;
+  color: $color-primary;
+  background: $bg-tag;
+  padding: 6rpx 20rpx;
+  border-radius: $radius-xl;
+}
+
+/* =====================================================
+   统计数据行
+   ===================================================== */
+.stats-card {
+  background: $bg-card;
+  border-radius: $radius-lg;
+  margin: $spacing-md;
+  padding: $spacing-md 0;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: $shadow-card;
+  border: 1rpx solid $border-light;
+}
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+.stat-num {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: $color-primary;
+  display: block;
+}
+.stat-label {
+  font-size: 22rpx;
+  color: $text-muted;
+  margin-top: 6rpx;
+  display: block;
+}
+.stat-divider {
+  width: 1rpx;
+  background: $border-light;
+  height: 56rpx;
+  align-self: center;
+}
+
+/* =====================================================
+   底部装饰文字
+   ===================================================== */
+.music-footer {
+  text-align: center;
+  font-size: 24rpx;
+  color: $text-muted;
+  margin: 40rpx 0 60rpx;
+  letter-spacing: 2rpx;
+}
+
+/* =====================================================
+   通用空状态
+   ===================================================== */
+.empty-tip {
+  text-align: center;
+  font-size: 26rpx;
+  color: $text-muted;
+  padding: 40rpx 0;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+.empty-icon { font-size: 80rpx; margin-bottom: 20rpx; }
+.empty-text { font-size: 26rpx; color: $text-muted; }
+
+/* =====================================================
+   悬浮操作按钮 (FAB)
+   ===================================================== */
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 160rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-primary, $color-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-fab;
+  z-index: 100;
+}
+.fab-icon {
+  font-size: 60rpx;
+  color: #fff;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+/* =====================================================
+   通用分割线
+   ===================================================== */
 .music-divider {
   height: 1rpx;
-  background: $border-light;
+  background: $divider;
   margin: 20rpx 0;
 }

@@ -151,7 +151,7 @@ function getDueLabel(todo) {
 <style scoped>
 .page {
   min-height: 100vh;
-  background: #f2f6fc;
+  background: #EDF4FB;
   padding-bottom: 140rpx;
 }
 
@@ -160,17 +160,18 @@ function getDueLabel(todo) {
   display: flex;
   background: #fff;
   padding: 0 24rpx;
-  border-bottom: 1rpx solid #eef2f7;
+  border-bottom: 1rpx solid #D6E9F7;
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: 0 2rpx 10rpx rgba(74,144,217,0.07);
 }
 .filter-tab {
   flex: 1;
   text-align: center;
   padding: 28rpx 0;
   font-size: 28rpx;
-  color: #8a9bb0;
+  color: #8FAEC8;
   position: relative;
   display: flex;
   align-items: center;
@@ -179,7 +180,7 @@ function getDueLabel(todo) {
 }
 .filter-tab.active {
   color: #4A90D9;
-  font-weight: 600;
+  font-weight: 700;
 }
 .filter-tab.active::after {
   content: '';
@@ -188,12 +189,12 @@ function getDueLabel(todo) {
   left: 25%;
   right: 25%;
   height: 4rpx;
-  background: #4A90D9;
+  background: linear-gradient(90deg, #4A90D9, #3ABFBF);
   border-radius: 2rpx;
 }
 .tab-count {
   font-size: 20rpx;
-  background: #e74c3c;
+  background: #E05C5C;
   color: #fff;
   border-radius: 20rpx;
   padding: 2rpx 8rpx;
@@ -202,9 +203,7 @@ function getDueLabel(todo) {
 }
 
 /* 列表 */
-.list-container {
-  padding: 20rpx 24rpx;
-}
+.list-container { padding: 20rpx 24rpx; }
 
 .empty-state {
   display: flex;
@@ -213,143 +212,75 @@ function getDueLabel(todo) {
   padding: 120rpx 0;
 }
 .empty-icon { font-size: 80rpx; margin-bottom: 20rpx; }
-.empty-text { font-size: 28rpx; color: #b0bec5; }
+.empty-text { font-size: 28rpx; color: #8FAEC8; }
 
 /* 待办卡片 */
 .todo-card {
   background: #fff;
-  border-radius: 16rpx;
+  border-radius: 24rpx;
   padding: 24rpx;
   margin-bottom: 16rpx;
   display: flex;
   align-items: flex-start;
-  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.04);
+  box-shadow: 0 3rpx 14rpx rgba(74,144,217,0.08);
+  border: 1rpx solid #E3F2FC;
   transition: opacity 0.2s;
 }
-.todo-card.done {
-  opacity: 0.6;
-}
+.todo-card.done { opacity: 0.55; }
 
 /* 勾选 */
-.todo-check {
-  margin-right: 20rpx;
-  margin-top: 4rpx;
-  flex-shrink: 0;
-}
+.todo-check { margin-right: 20rpx; margin-top: 4rpx; flex-shrink: 0; }
 .check-circle {
-  width: 44rpx;
-  height: 44rpx;
+  width: 44rpx; height: 44rpx;
   border-radius: 50%;
-  border: 2rpx solid #d0d8e4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 2rpx solid #B8D4EC;
+  display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
 .check-circle.checked {
-  background: #4A90D9;
-  border-color: #4A90D9;
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF);
+  border-color: transparent;
 }
-.check-icon {
-  color: #fff;
-  font-size: 24rpx;
-  font-weight: 700;
-}
+.check-icon { color: #fff; font-size: 24rpx; font-weight: 700; }
 
 /* 内容 */
-.todo-content {
-  flex: 1;
-  min-width: 0;
-}
-.todo-title-row {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  margin-bottom: 8rpx;
-}
-.todo-title {
-  font-size: 30rpx;
-  color: #2c3e50;
-  font-weight: 500;
-  flex: 1;
-}
-.todo-title.text-done {
-  text-decoration: line-through;
-  color: #b0bec5;
-}
+.todo-content { flex: 1; min-width: 0; }
+.todo-title-row { display: flex; align-items: center; gap: 12rpx; margin-bottom: 8rpx; }
+.todo-title { font-size: 30rpx; color: #1E3A5C; font-weight: 500; flex: 1; }
+.todo-title.text-done { text-decoration: line-through; color: #8FAEC8; }
 .priority-badge {
-  font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: 20rpx;
-  font-weight: 600;
-  flex-shrink: 0;
+  font-size: 20rpx; padding: 4rpx 12rpx;
+  border-radius: 20rpx; font-weight: 600; flex-shrink: 0;
 }
 .todo-desc {
-  font-size: 26rpx;
-  color: #8a9bb0;
-  margin-bottom: 10rpx;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 26rpx; color: #8FAEC8; margin-bottom: 10rpx;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.todo-meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12rpx;
-}
-.meta-date {
-  font-size: 22rpx;
-  color: #8a9bb0;
-}
-.due-warn {
-  color: #e74c3c;
-  font-weight: 600;
-}
+.todo-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 12rpx; }
+.meta-date { font-size: 22rpx; color: #8FAEC8; }
+.due-warn { color: #E05C5C; font-weight: 600; }
 .meta-tag {
-  font-size: 20rpx;
-  color: #4A90D9;
-  background: #eaf4fe;
-  padding: 2rpx 10rpx;
-  border-radius: 20rpx;
+  font-size: 20rpx; color: #4A90D9;
+  background: #E3F2FC; padding: 2rpx 10rpx; border-radius: 20rpx;
 }
 
 /* 删除按钮 */
 .todo-del {
-  width: 48rpx;
-  height: 48rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8rpx;
-  flex-shrink: 0;
+  width: 48rpx; height: 48rpx;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: 8rpx; flex-shrink: 0;
 }
-.del-icon {
-  font-size: 40rpx;
-  color: #c0ccd8;
-  line-height: 1;
-}
+.del-icon { font-size: 40rpx; color: #B8D4EC; line-height: 1; }
 
 /* 悬浮按钮 */
 .fab {
-  position: fixed;
-  right: 40rpx;
-  bottom: 160rpx;
-  width: 100rpx;
-  height: 100rpx;
+  position: fixed; right: 40rpx; bottom: 160rpx;
+  width: 100rpx; height: 100rpx;
   border-radius: 50%;
-  background: #4A90D9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8rpx 32rpx rgba(74,144,217,0.4);
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(74,144,217,0.40);
   z-index: 100;
 }
-.fab-icon {
-  font-size: 60rpx;
-  color: #fff;
-  line-height: 1;
-  margin-top: -4rpx;
-}
+.fab-icon { font-size: 60rpx; color: #fff; line-height: 1; margin-top: -4rpx; }
 </style>

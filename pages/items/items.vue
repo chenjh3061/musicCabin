@@ -231,172 +231,92 @@ function viewItem(item) {
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  background: #f2f6fc;
-  padding-bottom: 140rpx;
-}
+.page { min-height: 100vh; background: #EDF4FB; padding-bottom: 140rpx; }
 
 /* 标签栏 */
 .tab-bar {
-  display: flex;
-  background: #fff;
-  border-bottom: 1rpx solid #eef2f7;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  display: flex; background: #fff;
+  border-bottom: 1rpx solid #D6E9F7;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 2rpx 10rpx rgba(74,144,217,0.07);
 }
 .tab-item {
-  flex: 1;
-  text-align: center;
-  padding: 28rpx 0;
-  font-size: 26rpx;
-  color: #8a9bb0;
-  position: relative;
+  flex: 1; text-align: center; padding: 28rpx 0;
+  font-size: 26rpx; color: #8FAEC8; position: relative;
 }
-.tab-item.active {
-  color: #4A90D9;
-  font-weight: 600;
-}
+.tab-item.active { color: #4A90D9; font-weight: 700; }
 .tab-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 20%;
-  right: 20%;
-  height: 4rpx;
-  background: #4A90D9;
-  border-radius: 2rpx;
+  content: ''; position: absolute; bottom: 0;
+  left: 20%; right: 20%; height: 4rpx;
+  background: linear-gradient(90deg, #4A90D9, #3ABFBF); border-radius: 2rpx;
 }
 
 /* 搜索栏 */
-.search-bar {
-  padding: 16rpx 24rpx;
-  background: #f2f6fc;
-}
+.search-bar { padding: 16rpx 24rpx; background: #EDF4FB; }
 .search-inner {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 50rpx;
+  display: flex; align-items: center;
+  background: #fff; border-radius: 50rpx;
   padding: 14rpx 24rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  box-shadow: 0 2rpx 10rpx rgba(74,144,217,0.07);
+  border: 1rpx solid #D6E9F7;
 }
 .search-icon { font-size: 28rpx; margin-right: 12rpx; }
-.search-input { flex: 1; font-size: 28rpx; color: #2c3e50; }
-.search-clear { font-size: 36rpx; color: #c0ccd8; padding: 0 4rpx; }
+.search-input { flex: 1; font-size: 28rpx; color: #1E3A5C; }
+.search-clear { font-size: 36rpx; color: #B8D4EC; padding: 0 4rpx; }
 
 /* 空状态 */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 120rpx 0;
-}
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 120rpx 0; }
 .empty-icon { font-size: 80rpx; margin-bottom: 20rpx; }
-.empty-text { font-size: 28rpx; color: #b0bec5; }
+.empty-text { font-size: 28rpx; color: #8FAEC8; }
 
 .list-container { padding: 0 24rpx 20rpx; }
 
 /* 分组标题 */
-.group-header {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 0 12rpx;
-  gap: 12rpx;
-}
+.group-header { display: flex; align-items: center; padding: 24rpx 0 12rpx; gap: 12rpx; }
 .group-dot { width: 12rpx; height: 12rpx; border-radius: 50%; }
-.group-label { font-size: 26rpx; font-weight: 600; }
+.group-label { font-size: 26rpx; font-weight: 700; }
 .group-count {
-  font-size: 22rpx;
-  color: #8a9bb0;
-  background: #f0f4f8;
-  border-radius: 20rpx;
-  padding: 2rpx 10rpx;
+  font-size: 22rpx; color: #8FAEC8;
+  background: #E3F2FC; border-radius: 20rpx; padding: 2rpx 10rpx;
 }
 
 /* 物品卡片 */
 .item-card {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.04);
+  display: flex; align-items: center;
+  background: #fff; border-radius: 24rpx;
+  padding: 24rpx; margin-bottom: 16rpx;
+  box-shadow: 0 3rpx 14rpx rgba(74,144,217,0.08);
+  border: 1rpx solid #E3F2FC;
 }
 .item-type-badge {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: 18rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20rpx;
-  flex-shrink: 0;
+  width: 72rpx; height: 72rpx; border-radius: 18rpx;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 20rpx; flex-shrink: 0;
 }
 .type-icon { font-size: 36rpx; }
-.valuable-icon {
-  font-size: 44rpx;
-  margin-right: 20rpx;
-  flex-shrink: 0;
-}
-.item-main {
-  flex: 1;
-  min-width: 0;
-}
-.item-name {
-  display: block;
-  font-size: 30rpx;
-  font-weight: 500;
-  color: #2c3e50;
-  margin-bottom: 8rpx;
-}
+.valuable-icon { font-size: 44rpx; margin-right: 20rpx; flex-shrink: 0; }
+.item-main { flex: 1; min-width: 0; }
+.item-name { display: block; font-size: 30rpx; font-weight: 600; color: #1E3A5C; margin-bottom: 8rpx; }
 .item-meta { display: flex; gap: 16rpx; flex-wrap: wrap; }
-.meta-text { font-size: 22rpx; color: #8a9bb0; }
+.meta-text { font-size: 22rpx; color: #8FAEC8; }
 .location-row { margin-bottom: 6rpx; }
-.location-tag { font-size: 24rpx; color: #4A90D9; background: #eaf4fe; padding: 4rpx 12rpx; border-radius: 12rpx; }
-.item-note { font-size: 24rpx; color: #8a9bb0; margin-top: 6rpx; display: block; }
+.location-tag { font-size: 24rpx; color: #4A90D9; background: #E3F2FC; padding: 4rpx 12rpx; border-radius: 12rpx; }
+.item-note { font-size: 24rpx; color: #8FAEC8; margin-top: 6rpx; display: block; }
 
-.item-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-right: 8rpx;
-}
-.expiry-badge {
-  font-size: 24rpx;
-  font-weight: 600;
-  margin-bottom: 4rpx;
-}
-.expiry-date {
-  font-size: 20rpx;
-  color: #b0bec5;
-}
+.item-right { display: flex; flex-direction: column; align-items: flex-end; margin-right: 8rpx; }
+.expiry-badge { font-size: 24rpx; font-weight: 700; margin-bottom: 4rpx; }
+.expiry-date { font-size: 20rpx; color: #B8D4EC; }
 
-.item-del {
-  width: 48rpx;
-  height: 48rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.del-icon { font-size: 40rpx; color: #c0ccd8; }
+.item-del { width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center; }
+.del-icon { font-size: 40rpx; color: #B8D4EC; }
 
-/* fab */
+/* FAB */
 .fab {
-  position: fixed;
-  right: 40rpx;
-  bottom: 160rpx;
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background: #4A90D9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8rpx 32rpx rgba(74,144,217,0.4);
-  z-index: 100;
+  position: fixed; right: 40rpx; bottom: 160rpx;
+  width: 100rpx; height: 100rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #4A90D9, #3ABFBF);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(74,144,217,0.38); z-index: 100;
 }
 .fab-icon { font-size: 60rpx; color: #fff; line-height: 1; margin-top: -4rpx; }
 </style>

@@ -135,71 +135,47 @@ function onTempToChange() { convertTemp() }
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  background: #F0F4FA;
-  padding-bottom: 40rpx;
-}
+.page { min-height: 100vh; background: #EDF4FB; padding-bottom: 60rpx; }
 
-.hero-icon {
-  font-size: 64rpx;
-  display: block;
-  margin-bottom: 12rpx;
+/* Hero */
+.music-hero {
+  background: linear-gradient(145deg, #3A7FD5 0%, #29ACAB 100%);
+  padding: 60rpx 32rpx 50rpx; text-align: center;
+  border-radius: 0 0 56rpx 56rpx;
+  box-shadow: 0 10rpx 36rpx rgba(42,100,180,0.18);
 }
-.hero-title {
-  font-size: 44rpx;
-  font-weight: 600;
-  letter-spacing: 4rpx;
-  color: white;
-}
-.hero-sub {
-  font-size: 24rpx;
-  opacity: 0.9;
-  margin-top: 8rpx;
-  color: white;
-}
+.hero-icon { font-size: 64rpx; display: block; margin-bottom: 12rpx; }
+.hero-title { font-size: 44rpx; font-weight: 700; letter-spacing: 4rpx; color: #fff; display: block; }
+.hero-sub { font-size: 24rpx; opacity: 0.85; margin-top: 8rpx; color: #fff; display: block; }
 
-.card-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #2C3E50;
-  margin-bottom: 24rpx;
+/* 通用卡片 */
+.music-card {
+  background: #fff; border-radius: 32rpx; margin: 16rpx 24rpx;
+  padding: 28rpx; box-shadow: 0 4rpx 20rpx rgba(74,144,217,0.08);
+  border: 1rpx solid #D6E9F7;
 }
+.card-title { font-size: 30rpx; font-weight: 700; color: #1E3A5C; margin-bottom: 22rpx; display: block; }
 
-.converter-row {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
+/* 换算行 */
+.converter-row { display: flex; align-items: center; gap: 14rpx; flex-wrap: wrap; }
 .music-input.small {
-  width: 160rpx;
-  background: #F5F8FF;
-  border-radius: 32rpx;
-  padding: 20rpx 24rpx;
-  font-size: 28rpx;
-  border: 1rpx solid #E4E9F2;
+  width: 150rpx; background: #EEF4FA; border-radius: 24rpx;
+  padding: 18rpx 18rpx; font-size: 28rpx;
+  border: 1rpx solid #D6E9F7; color: #1E3A5C;
 }
 .picker {
-  background: #E8F0FE;
-  padding: 16rpx 28rpx;
-  border-radius: 48rpx;
-  font-size: 28rpx;
-  color: #5D9BEC;
+  background: #E3F2FC; padding: 14rpx 22rpx;
+  border-radius: 40rpx; font-size: 26rpx; color: #4A90D9;
+  border: 1rpx solid #B8D4EC;
 }
-.equal {
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #7F8C8D;
-}
+.equal { font-size: 32rpx; font-weight: 700; color: #8FAEC8; }
 .result {
-  background: #E8F0FE;
-  padding: 16rpx 28rpx;
-  border-radius: 48rpx;
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #5D9BEC;
-  min-width: 160rpx;
-  text-align: center;
+  background: linear-gradient(135deg, #E3F2FC, #DFF4F4);
+  padding: 14rpx 22rpx; border-radius: 40rpx;
+  font-size: 30rpx; font-weight: 700; color: #2F72C0;
+  min-width: 150rpx; text-align: center;
+  border: 1rpx solid #B8D4EC;
 }
+
+.music-footer { text-align: center; font-size: 24rpx; color: #B8D4EC; margin: 36rpx 0 60rpx; letter-spacing: 2rpx; }
 </style>
