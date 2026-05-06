@@ -1,120 +1,134 @@
 <template>
-  <view class="page">
-    <view class="header">
-      <view class="header-left"><text class="greeting">随机决定</text><text class="date-text">抛硬币｜抽签｜午餐</text></view>
-      <view class="header-right"><text class="app-title">选择困难解药</text></view>
+  <view class="music-random">
+    <view class="hero">
+      <text class="hero-icon">🎲</text>
+      <text class="hero-title">随机回旋曲</text>
+      <text class="hero-sub">抛硬币 · 抽签 · 今日菜单</text>
     </view>
 
-    <!-- 原有抛硬币 -->
+    <!-- 抛硬币模块 -->
     <view class="card">
-      <view class="card-title">🪙 抛硬币</view>
-      <view class="random-result">{{ coinResult }}</view>
-      <button class="random-btn" @click="flipCoin">抛一次</button>
+      <view class="card-title">🪙 抛一枚硬币</view>
+      <view class="result-area" :class="{ flip: coinFlip }">{{ coinResult }}</view>
+      <button class="music-btn" @click="flipCoin">抛一次</button>
     </view>
 
-    <!-- 原有随机数字 -->
+    <!-- 随机数字 -->
     <view class="card">
       <view class="card-title">🔢 随机数字</view>
-      <view class="range">
-        <input class="range-input" type="number" v-model.number="rangeMin" placeholder="最小值" />
-        <text> ～ </text>
-        <input class="range-input" type="number" v-model.number="rangeMax" placeholder="最大值" />
+      <view class="range-row">
+        <input class="range-input" type="number" v-model.number="rangeMin" />
+        <text>—</text>
+        <input class="range-input" type="number" v-model.number="rangeMax" />
       </view>
-      <view class="random-result">{{ randomNum !== null ? randomNum : '点击生成' }}</view>
-      <button class="random-btn" @click="genRandomNum">生成</button>
+      <view class="result-area">{{ randomNum !== null ? randomNum : '点击生成' }}</view>
+      <button class="music-btn" @click="genRandomNum">生成</button>
     </view>
 
-    
-
-    <!-- 新增：随机午餐/晚餐 -->
+    <!-- 自定义抽签 -->
     <view class="card">
-      <view class="card-title">🍜 随机午餐/晚餐</view>
-      <view class="meal-options">
-        <view class="meal-editor">
-          <textarea v-model="mealOptions" placeholder="每行一个选项，例如：兰州拉面\n沙县小吃\n麦当劳\n食堂" rows="4"></textarea>
-          <button class="save-meal-btn" @click="saveMealOptions">保存菜单</button>
-        </view>
-      </view>
-      <view class="random-result">{{ mealResult || '点击随机选择一顿' }}</view>
-      <button class="random-btn" @click="pickMeal">随机决定吃什么</button>
+      <view class="card-title">🎼 自定义签筒</view>
+      <textarea class="music-textarea" v-model="optionsText" placeholder="每行一个选项" rows="3"></textarea>
+      <view class="result-area">{{ customResult || '点击抽一支签' }}</view>
+      <button class="music-btn" @click="drawCustom">摇一摇</button>
     </view>
-	
-	<!-- 原有自定义抽签 -->
-	<view class="card">
-	  <view class="card-title">🎲 自定义抽签</view>
-	  <view class="options-input">
-	    <textarea v-model="optionsText" placeholder="每行一个选项，例如：吃饭\n看电影\n散步" rows="4"></textarea>
-	  </view>
-	  <view class="random-result">{{ customResult || '点击抽签' }}</view>
-	  <button class="random-btn" @click="drawCustom">抽签</button>
-	</view>
-	
+
+    <!-- 随机午餐/晚餐 -->
+    <view class="card">
+      <view class="card-title">🍽️ 今日食堂随机曲</view>
+      <textarea class="music-textarea" v-model="mealOptions" placeholder="每行一道美食" rows="3"></textarea>
+      <button class="small-save" @click="saveMealOptions">保存菜单</button>
+      <view class="result-area large">{{ mealResult || '点击随机选择' }}</view>
+      <button class="music-btn" @click="pickMeal">随机决定吃什么</button>
+    </view>
   </view>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// 抛硬币
 const coinResult = ref('')
-function flipCoin() { coinResult.value = Math.random() < 0.5 ? '正面' : '反面' }
-
-// 随机数字
-const rangeMin = ref(1)
-const rangeMax = ref(100)
-const randomNum = ref(null)
-function genRandomNum() {
-  const min = Math.ceil(rangeMin.value)
-  const max = Math.floor(rangeMax.value)
-  if (min >= max) { uni.showToast({ title: '最小值需小于最大值', icon: 'none' }); return }
-  randomNum.value = Math.floor(Math.random() * (max - min + 1)) + min
+const coinFlip = ref(false)
+function flipCoin() {
+  coinFlip.value = true
+  setTimeout(() => { coinFlip.value = false }, 300)
+  coinResult.value = Math.random() < 0.5 ? '正面' : '反面'
 }
 
-// 自定义抽签
+const rangeMin = ref(1), rangeMax = ref(100), randomNum = ref(null)
+function genRandomNum() {
+  if(rangeMin.value >= rangeMax.value) return uni.showToast({title:'最小值需小于最大值',icon:'none'})
+  randomNum.value = Math.floor(Math.random()*(rangeMax.value-rangeMin.value+1))+rangeMin.value
+}
+
 const optionsText = ref('吃饭\n看电影\n散步')
 const customResult = ref('')
 function drawCustom() {
-  const lines = optionsText.value.split('\n').filter(l => l.trim().length > 0)
-  if (lines.length === 0) { customResult.value = '请至少输入一个选项'; return }
-  const idx = Math.floor(Math.random() * lines.length)
-  customResult.value = lines[idx]
+  const lines = optionsText.value.split('\n').filter(l=>l.trim())
+  if(!lines.length) { customResult.value = '请至少填写一项'; return }
+  customResult.value = lines[Math.floor(Math.random()*lines.length)]
 }
 
-// 随机午餐/晚餐
 const mealOptions = ref('')
 const mealResult = ref('')
-function loadMealOptions() {
-  const stored = uni.getStorageSync('mealOptions')
-  if (stored) mealOptions.value = stored
-  else mealOptions.value = '兰州拉面\n沙县小吃\n麦当劳\n肯德基\n食堂盖饭\n自选快餐'
-}
-function saveMealOptions() {
-  uni.setStorageSync('mealOptions', mealOptions.value)
-  uni.showToast({ title: '菜单已保存', icon: 'success' })
-}
+function loadMealOptions() { mealOptions.value = uni.getStorageSync('mealOptions') || '🥗 沙拉\n🍜 牛肉面\n🍛 咖喱饭\n🥟 水饺' }
+function saveMealOptions() { uni.setStorageSync('mealOptions', mealOptions.value); uni.showToast({title:'菜单已存档'}) }
 function pickMeal() {
-  const lines = mealOptions.value.split('\n').filter(l => l.trim().length > 0)
-  if (lines.length === 0) { mealResult.value = '请先添加一些美食选项'; return }
-  const idx = Math.floor(Math.random() * lines.length)
-  mealResult.value = lines[idx]
+  const lines = mealOptions.value.split('\n').filter(l=>l.trim())
+  if(!lines.length) { mealResult.value = '请先录入一些美食吧'; return }
+  mealResult.value = lines[Math.floor(Math.random()*lines.length)]
 }
 
-onMounted(() => {
-  loadMealOptions()
-})
+onMounted(loadMealOptions)
 </script>
 
 <style scoped>
-/* 复用已有样式，补充新样式 */
-.page { min-height: 100vh; background: #f2f6fc; padding-bottom: 80rpx; }
-.header { display: flex; justify-content: space-between; align-items: flex-end; padding: 60rpx 32rpx 24rpx; background: linear-gradient(135deg, #4A90D9 0%, #357abf 100%); }
-.header-left { font-size: 30rpx; color: #fff; }
-
-.random-result { font-size: 48rpx; font-weight: 700; text-align: center; margin: 24rpx 0; color: #4A90D9; }
-.random-btn { background: #4A90D9; color: #fff; border-radius: 48rpx; font-size: 28rpx; width: 300rpx; margin: 0 auto; }
-.range { display: flex; align-items: center; justify-content: center; gap: 16rpx; margin-bottom: 24rpx; }
-.range-input { background: #f5f7fa; border-radius: 16rpx; padding: 12rpx 20rpx; width: 160rpx; text-align: center; }
-.options-input textarea, .meal-editor textarea { background: #f5f7fa; border-radius: 16rpx; padding: 20rpx; font-size: 28rpx; width: 90%; margin-bottom: 16rpx; }
-.save-meal-btn { background: #e8faf0; color: #2e7d32; border-radius: 48rpx; font-size: 26rpx; padding: 12rpx; width: auto; margin-top: 8rpx; }
-.meal-editor { margin-bottom: 16rpx; }
+.music-random {
+  background: #FDF9F5;
+  padding-bottom: 80rpx;
+}
+.hero {
+  background: linear-gradient(115deg, #E5D5C0, #DCC8B2);
+  padding: 60rpx 0 40rpx;
+  text-align: center;
+  border-radius: 0 0 48rpx 48rpx;
+}
+.hero-icon { font-size: 80rpx; display: block; margin-bottom: 12rpx; }
+.hero-title { font-size: 40rpx; font-weight: 600; color: #5F4C3A; letter-spacing: 4rpx; }
+.hero-sub { font-size: 24rpx; color: #8F735C; margin-top: 6rpx; }
+.card {
+  background: rgba(255,252,248,0.95);
+  backdrop-filter: blur(12px);
+  border-radius: 48rpx;
+  margin: 24rpx 24rpx;
+  padding: 32rpx;
+}
+.card-title { font-size: 32rpx; font-weight: 500; color: #7A624E; margin-bottom: 28rpx; letter-spacing: 2rpx; }
+.result-area {
+  background: #F8F2EA;
+  border-radius: 80rpx;
+  padding: 28rpx 20rpx;
+  text-align: center;
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #B08C6E;
+  margin: 20rpx 0;
+  transition: all 0.2s;
+}
+.result-area.flip { transform: rotateY(180deg); }
+.music-btn {
+  background: #EADBC6;
+  color: #6F5540;
+  border-radius: 60rpx;
+  font-size: 28rpx;
+  padding: 20rpx;
+  width: 60%;
+  margin: 0 auto;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+}
+.range-row { display: flex; justify-content: center; gap: 20rpx; margin-bottom: 20rpx; }
+.range-input { background: #F8F2EA; border-radius: 32rpx; padding: 16rpx 24rpx; width: 140rpx; text-align: center; }
+.music-textarea { background: #F8F2EA; border-radius: 32rpx; padding: 20rpx; font-size: 28rpx; margin-bottom: 16rpx; width: 100%; }
+.small-save { background: #E8DDD0; border-radius: 40rpx; font-size: 24rpx; padding: 12rpx; margin-bottom: 20rpx; width: 200rpx; }
+.result-area.large { font-size: 40rpx; }
 </style>

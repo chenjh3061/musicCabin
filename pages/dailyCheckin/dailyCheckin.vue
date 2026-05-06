@@ -1,18 +1,13 @@
 <template>
   <view class="page">
-    <!-- 头部 -->
-    <view class="header">
-      <view class="header-left">
-        <text class="greeting">每日打卡</text>
-        <text class="date-text">{{ todayStr }}</text>
-      </view>
-      <view class="header-right">
-        <text class="app-title">习惯追踪</text>
-      </view>
+    <view class="music-hero">
+      <text class="hero-icon">🎵</text>
+      <text class="hero-title">每日练习</text>
+      <text class="hero-sub">习惯 · 坚持 · 成长</text>
     </view>
 
-    <!-- 连续天数卡片 -->
-    <view class="card stats">
+    <!-- 统计卡片 -->
+    <view class="stats-card">
       <view class="stat-item">
         <text class="stat-num">{{ longestStreak }}</text>
         <text class="stat-label">最长连续</text>
@@ -29,10 +24,10 @@
       </view>
     </view>
 
-    <!-- 任务列表 -->
-    <view class="card">
-      <view class="card-title">
-        📋 我的习惯
+    <!-- 习惯列表 -->
+    <view class="music-card">
+      <view class="card-header">
+        <text class="card-title">📋 我的习惯</text>
         <text class="add-btn" @click="addTask">+ 添加</text>
       </view>
       <view v-for="task in tasks" :key="task.id" class="task-item">
@@ -45,19 +40,25 @@
         </view>
       </view>
       <view v-if="tasks.length === 0" class="empty-tip">
-        暂无习惯，点击 + 添加吧
+        还没有习惯，点击 + 添加吧
       </view>
     </view>
 
-    <!-- 日历热力图（简洁版） -->
-    <view class="card">
-      <view class="card-title">📅 打卡日历</view>
-      <view class="calendar-grid">
-        <view v-for="day in last30Days" :key="day.date" class="cal-day" :class="{ active: day.checked }">
-          <text class="cal-day-num">{{ day.day }}</text>
+    <!-- 打卡热力图（最近30天） -->
+    <view class="music-card">
+      <view class="card-title">📅 最近30天打卡</view>
+      <view class="heatmap-grid">
+        <view v-for="day in last30Days" :key="day.date" class="heatmap-day" :class="{ active: day.checked }">
+          <text class="heatmap-num">{{ day.day }}</text>
         </view>
       </view>
+      <view class="heatmap-legend">
+        <view class="legend-dot"></view>
+        <text class="legend-text">已打卡</text>
+      </view>
     </view>
+
+    <view class="music-footer">♫ 每天进步一点点 ♫</view>
   </view>
 </template>
 
@@ -65,13 +66,12 @@
 import { ref, computed, onMounted } from 'vue'
 
 // ---------- 数据 ----------
-const tasks = ref([])        // { id, name, remindTime, history: { YYYY-MM-DD: true } }
-const todayStr = ref('')
+const tasks = ref([])        // { id, name, remindTime, history: { YYYY-MM-DD: bool } }
 const longestStreak = ref(0)
 const currentStreak = ref(0)
 const totalDays = ref(0)
 
-// 今日日期 YYYY-MM-DD
+// 获取今日 YYYY-MM-DD
 function getToday() {
   const d = new Date()
   return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`
@@ -85,12 +85,11 @@ function loadData() {
   } else {
     // 演示数据
     tasks.value = [
-      { id: '1', name: '晨跑', remindTime: '07:00', history: {} },
-      { id: '2', name: '阅读30分钟', remindTime: '21:00', history: {} }
+      { id: '1', name: '晨间冥想', remindTime: '07:00', history: {} },
+      { id: '2', name: '练琴30分钟', remindTime: '20:00', history: {} }
     ]
     saveData()
   }
-  // 初始化今日打卡状态
   ensureTodayHistory()
   updateStats()
 }
@@ -99,7 +98,7 @@ function saveData() {
   uni.setStorageSync('dailyCheckinData', { tasks: tasks.value })
 }
 
-// 确保每个任务都有今日的记录字段
+// 确保每个任务都有今日记录
 function ensureTodayHistory() {
   const today = getToday()
   let changed = false
@@ -124,7 +123,7 @@ function toggleTask(task) {
   updateStats()
 }
 
-// 计算连续天数、总打卡天数等
+// 计算连续天数、总打卡天数
 function updateStats() {
   const today = getToday()
   const allHistoryDates = []
@@ -133,11 +132,10 @@ function updateStats() {
       if (task.history[date]) allHistoryDates.push(date)
     })
   })
-  // 去重并排序
   const uniqueDates = [...new Set(allHistoryDates)].sort()
   totalDays.value = uniqueDates.length
 
-  // 计算当前连续（从今天开始往前推，每天都有至少一个任务打卡）
+  // 当前连续（从今天开始往前推，每天都有至少一个打卡）
   let streak = 0
   let cur = new Date()
   while (true) {
@@ -155,14 +153,13 @@ function updateStats() {
   }
   currentStreak.value = streak
 
-  // 最长连续（遍历所有日期）
+  // 最长连续
   let maxStreak = 0
   let temp = 0
-  let sortedDates = uniqueDates.sort()
-  for (let i = 0; i < sortedDates.length; i++) {
+  for (let i = 0; i < uniqueDates.length; i++) {
     if (i === 0) { temp = 1; continue }
-    const prev = new Date(sortedDates[i-1])
-    const curr = new Date(sortedDates[i])
+    const prev = new Date(uniqueDates[i-1])
+    const curr = new Date(uniqueDates[i])
     const diffDays = (curr - prev) / (1000*3600*24)
     if (diffDays === 1) {
       temp++
@@ -175,7 +172,7 @@ function updateStats() {
   longestStreak.value = maxStreak
 }
 
-// 最近30天日历数据
+// 最近30天打卡数据（用于热力图）
 const last30Days = computed(() => {
   const days = []
   const today = new Date()
@@ -196,12 +193,12 @@ const last30Days = computed(() => {
   return days
 })
 
-// 添加新任务
+// 添加任务
 function addTask() {
   uni.showModal({
     title: '新建习惯',
     editable: true,
-    placeholderText: '习惯名称，例如：喝水2L',
+    placeholderText: '习惯名称，例如：阅读30分钟',
     success(res) {
       if (res.confirm && res.content) {
         const newId = Date.now().toString()
@@ -220,34 +217,147 @@ function addTask() {
 }
 
 onMounted(() => {
-  todayStr.value = getToday()
   loadData()
 })
 </script>
 
 <style scoped>
-/* 复用之前的全局样式，追加局部样式 */
-.page { min-height: 100vh; background: #f2f6fc; padding-bottom: 80rpx; }
-.header { display: flex; justify-content: space-between; align-items: flex-end; padding: 60rpx 32rpx 24rpx; background: linear-gradient(135deg, #4A90D9 0%, #357abf 100%); }
-.greeting { font-size: 38rpx; font-weight: 600; color: #fff; }
-.date-text { font-size: 24rpx; color: rgba(255,255,255,0.8); margin-top: 6rpx; }
-.app-title { font-size: 28rpx; color: rgba(255,255,255,0.7); }
-.card { background: #fff; border-radius: 24rpx; margin: 20rpx 24rpx; padding: 32rpx; box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.04); }
-.card-title { font-size: 30rpx; font-weight: 600; color: #2c3e50; margin-bottom: 24rpx; display: flex; justify-content: space-between; align-items: center; }
-.add-btn { font-size: 26rpx; color: #4A90D9; background: #eaf4fe; padding: 8rpx 20rpx; border-radius: 28rpx; }
-.stats { display: flex; align-items: center; justify-content: space-around; padding: 24rpx 0; }
-.stat-item { flex: 1; text-align: center; }
-.stat-num { display: block; font-size: 44rpx; font-weight: 700; color: #2c3e50; }
-.stat-label { font-size: 24rpx; color: #8a9bb0; margin-top: 8rpx; }
-.stat-divider { width: 1rpx; height: 60rpx; background: #eef2f7; }
-.task-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 0; border-bottom: 1rpx solid #f0f4f8; }
-.task-name { font-size: 30rpx; color: #2c3e50; }
-.task-remind { font-size: 24rpx; color: #8a9bb0; margin-left: 16rpx; }
-.check-icon { font-size: 44rpx; }
-.empty-tip { text-align: center; color: #aab5c2; padding: 40rpx 0; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12rpx; }
-.cal-day { background: #f5f7fa; border-radius: 12rpx; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-.cal-day.active { background: #4A90D9; }
-.cal-day.active .cal-day-num { color: #fff; }
-.cal-day-num { font-size: 26rpx; color: #2c3e50; }
+.page {
+  min-height: 100vh;
+  background: #F0F4FA;
+  padding-bottom: 40rpx;
+}
+
+.hero-icon {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+.hero-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+}
+.hero-sub {
+  font-size: 24rpx;
+  opacity: 0.9;
+  margin-top: 8rpx;
+}
+
+.stats-card {
+  background: white;
+  border-radius: 48rpx;
+  margin: 24rpx;
+  padding: 32rpx 0;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.02);
+}
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+.stat-num {
+  font-size: 52rpx;
+  font-weight: 700;
+  color: #5D9BEC;
+}
+.stat-label {
+  font-size: 24rpx;
+  color: #7F8C8D;
+  margin-top: 12rpx;
+  display: block;
+}
+.stat-divider {
+  width: 1rpx;
+  background: #E4E9F2;
+  height: 60rpx;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2C3E50;
+}
+.add-btn {
+  font-size: 26rpx;
+  color: #5D9BEC;
+  background: #E8F0FE;
+  padding: 8rpx 24rpx;
+  border-radius: 60rpx;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #E4E9F2;
+}
+.task-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #2C3E50;
+}
+.task-remind {
+  font-size: 24rpx;
+  color: #95A5A6;
+  margin-left: 16rpx;
+}
+.check-icon {
+  font-size: 48rpx;
+}
+.empty-tip {
+  text-align: center;
+  color: #95A5A6;
+  padding: 60rpx 0;
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 12rpx;
+  margin-top: 20rpx;
+}
+.heatmap-day {
+  background: #F0F4FA;
+  border-radius: 12rpx;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.heatmap-day.active {
+  background: #5D9BEC;
+}
+.heatmap-day.active .heatmap-num {
+  color: white;
+}
+.heatmap-num {
+  font-size: 24rpx;
+  color: #7F8C8D;
+}
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+.legend-dot {
+  width: 20rpx;
+  height: 20rpx;
+  background: #5D9BEC;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
+}
+.legend-text {
+  font-size: 24rpx;
+  color: #7F8C8D;
+}
 </style>

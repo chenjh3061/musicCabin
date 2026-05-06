@@ -1,119 +1,115 @@
 <template>
-  <view class="page">
-    <!-- 顶部问候区 -->
-    <view class="header">
-      <view class="header-left">
-        <text class="greeting">{{ greeting }}</text>
-        <text class="date-text">{{ todayStr }}</text>
+  <view class="music-home">
+    <!-- 顶部音乐问候区 -->
+    <view class="hero-section">
+      <view class="hero-bg"></view>
+      <view class="hero-content">
+        <view class="greeting-box">
+          <text class="greeting">{{ greeting }}</text>
+          <text class="song-quote">🎵 生活如歌，缓慢而温柔</text>
+        </view>
+        <view class="date-box">
+          <text class="date-text">{{ todayStr }}</text>
+        </view>
       </view>
-      <view class="header-right">
-        <text class="app-title">工具箱</text>
+      <!-- 声波动画装饰 -->
+      <view class="wave">
+        <view class="wave-bar" v-for="n in 5" :key="n" :style="{ animationDelay: n*0.1+'s' }"></view>
       </view>
     </view>
 
-    <!-- 全局搜索条 -->
-    <view class="search-bar">
-      <input 
-        class="search-input" 
-        v-model="keyword" 
-        placeholder="搜索提醒、物品、纪念日、打卡..." 
-        confirm-type="search"
-        @confirm="doSearch"
-      />
-      <view class="search-icon" @click="doSearch">🔍</view>
-      <view class="search-clear" v-if="keyword" @click="clearSearch">✖️</view>
+    <!-- 搜索条 -->
+    <view class="search-wrapper">
+      <view class="search-box">
+        <text class="search-icon">🔍</text>
+        <input 
+          class="search-input" 
+          v-model="keyword" 
+          placeholder="搜索待办、物品、纪念日..." 
+          confirm-type="search"
+          @confirm="doSearch"
+          placeholder-class="search-placeholder"
+        />
+        <view class="search-clear" v-if="keyword" @click="clearSearch">✖️</view>
+      </view>
     </view>
 
-    <!-- 搜索结果区域（仅当有搜索词时显示） -->
-    <view class="search-result" v-if="keyword && searchResults.length">
-      <view class="result-title">搜索结果：</view>
+    <!-- 搜索结果下拉卡片 -->
+    <view class="search-result-card" v-if="keyword && searchResults.length">
+      <view class="result-title">🔎 搜索结果</view>
       <view class="result-list">
         <view v-for="(item, idx) in searchResults" :key="idx" class="result-item" @click="goToDetail(item)">
           <view class="result-type" :style="{ background: item.typeColor }">{{ item.typeName }}</view>
-          <view class="result-content">
+          <view class="result-info">
             <text class="result-name">{{ item.name }}</text>
-            <text class="result-info">{{ item.info }}</text>
+            <text class="result-desc">{{ item.info }}</text>
           </view>
         </view>
       </view>
     </view>
     <view class="search-empty" v-if="keyword && !searchResults.length">
-      <text>没有找到相关内容</text>
+      <text>🎧 没有找到相关记录，试试其他关键词~</text>
     </view>
 
-    <!-- 今日概览卡片（保持不变） -->
-    <view class="overview-card">
-      <view class="overview-item" @click="navTo('/pages/todo/todo')">
-        <text class="ov-num" :style="{ color: '#e74c3c' }">{{ todoCounts.pending }}</text>
-        <text class="ov-label">待完成</text>
+    <!-- 今日活力卡片（数据概览） -->
+    <view class="stats-card">
+      <view class="stat-item" @click="navTo('/pages/todo/todo')">
+        <text class="stat-num" style="color: #E9A6A6;">{{ todoCounts.pending }}</text>
+        <text class="stat-label">待办</text>
       </view>
-      <view class="ov-divider"></view>
-      <view class="overview-item" @click="navTo('/pages/calendar/calendar')">
-        <text class="ov-num" :style="{ color: '#f39c12' }">{{ todayEventCount }}</text>
-        <text class="ov-label">今日事件</text>
+      <view class="stat-divider"></view>
+      <view class="stat-item" @click="navTo('/pages/calendar/calendar')">
+        <text class="stat-num" style="color: #C8A2C8;">{{ todayEventCount }}</text>
+        <text class="stat-label">今日事件</text>
       </view>
-      <view class="ov-divider"></view>
-      <view class="overview-item" @click="navTo('/pages/items/items?tab=expiry')">
-        <text class="ov-num" :style="{ color: '#e67e22' }">{{ expiryCount }}</text>
-        <text class="ov-label">即将过期</text>
+      <view class="stat-divider"></view>
+      <view class="stat-item" @click="navTo('/pages/items/items?tab=expiry')">
+        <text class="stat-num" style="color: #E2B87A;">{{ expiryCount }}</text>
+        <text class="stat-label">即将过期</text>
       </view>
     </view>
 
-    <!-- 工具入口网格（保持不变，可新增工资计算入口） -->
-    <view class="section-title">常用工具</view>
+    <!-- 工具网格 -->
+    <view class="section-title">✨ 灵感工具集</view>
     <view class="tool-grid">
-      <view
-        v-for="tool in tools"
-        :key="tool.id"
-        class="tool-item"
-        @click="navTo(tool.path)"
-      >
-        <view class="tool-icon-wrap" :style="{ background: tool.bg }">
-          <text class="tool-icon">{{ tool.icon }}</text>
+      <view v-for="tool in tools" :key="tool.id" class="tool-card" @click="navTo(tool.path)">
+        <view class="tool-icon" :style="{ background: tool.bg }">
+          <text>{{ tool.icon }}</text>
         </view>
         <text class="tool-name">{{ tool.name }}</text>
         <text class="tool-desc">{{ tool.desc }}</text>
       </view>
     </view>
 
-    <!-- 今日待办快速预览（保持不变） -->
-    <view class="section-card" v-if="pendingTodos.length > 0">
-      <view class="section-header">
-        <text class="section-title-inline">待办提醒</text>
-        <text class="section-more" @click="navTo('/pages/todo/todo')">查看全部 ›</text>
+    <!-- 今日待办轻提示 -->
+    <view class="music-card" v-if="pendingTodos.length">
+      <view class="card-header">
+        <text class="card-title">🎼 今日待办</text>
+        <text class="card-more" @click="navTo('/pages/todo/todo')">全部 ›</text>
       </view>
-      <view
-        v-for="todo in pendingTodos.slice(0, 3)"
-        :key="todo._id"
-        class="quick-todo-item"
-      >
-        <view
-          class="priority-dot"
-          :style="{ background: priorityColor(todo.priority) }"
-        ></view>
-        <text class="quick-todo-text">{{ todo.title }}</text>
-        <text class="quick-todo-date" v-if="todo.dueDate">{{ formatD(todo.dueDate) }}</text>
+      <view v-for="todo in pendingTodos.slice(0, 3)" :key="todo._id" class="todo-item">
+        <view class="todo-dot" :style="{ background: priorityColor(todo.priority) }"></view>
+        <text class="todo-text">{{ todo.title }}</text>
+        <text class="todo-date" v-if="todo.dueDate">{{ formatD(todo.dueDate) }}</text>
       </view>
     </view>
 
-    <!-- 即将过期物品提醒（保持不变） -->
-    <view class="section-card" v-if="urgentItems.length > 0">
-      <view class="section-header">
-        <text class="section-title-inline">过期提醒</text>
-        <text class="section-more" @click="navTo('/pages/items/items?tab=expiry')">查看全部 ›</text>
+    <!-- 即将过期小贴士 -->
+    <view class="music-card" v-if="urgentItems.length">
+      <view class="card-header">
+        <text class="card-title">⏳ 临期物品</text>
+        <text class="card-more" @click="navTo('/pages/items/items?tab=expiry')">全部 ›</text>
       </view>
-      <view
-        v-for="item in urgentItems.slice(0, 3)"
-        :key="item._id"
-        class="expiry-item"
-      >
+      <view v-for="item in urgentItems.slice(0, 3)" :key="item._id" class="expiry-item">
         <text class="expiry-name">{{ item.name }}</text>
-        <text
-          class="expiry-tag"
-          :style="{ color: getExpiry(item.expiryDate).color }"
-        >{{ getExpiry(item.expiryDate).label }}</text>
+        <text class="expiry-tag" :style="{ color: getExpiry(item.expiryDate).color }">
+          {{ getExpiry(item.expiryDate).label }}
+        </text>
       </view>
     </view>
+
+    <!-- 底部装饰音符 -->
+    <view class="footer-note">♪ 让生活像一首慢歌 ♪</view>
   </view>
 </template>
 
@@ -121,69 +117,56 @@
 import { ref, computed, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { formatDate, getExpiryStatus, PRIORITY_MAP, daysFromNow } from '../../utils/helper.js'
+import { globalSearch } from '../../utils/dataManager.js'
 
-// ---------- 问候语 ----------
-const now = new Date()
-const hour = now.getHours()
+// 问候语 & 日期
+const hour = new Date().getHours()
 const greeting = computed(() => {
-  if (hour < 6) return '夜深了，注意休息 🌙'
-  if (hour < 12) return '早上好，新的一天开始了 ☀️'
-  if (hour < 14) return '中午好，记得休息一下 🍽️'
-  if (hour < 18) return '下午好，继续加油 💪'
-  return '晚上好，今天辛苦了 🌆'
+  if (hour < 6) return '夜深静听，一曲安眠 🌙'
+  if (hour < 12) return '晨光温柔，旋律苏醒 ☀️'
+  if (hour < 14) return '午间小憩，听首轻音乐 🍃'
+  if (hour < 18) return '午后时光，唱片旋转 📀'
+  return '夜幕降临，灵魂爵士 🎷'
 })
 const todayStr = formatDate(null, 'YYYY年MM月DD日')
 
-// ---------- 工具列表（增加设置入口） ----------
+// 工具列表（风格图标）
 const tools = [
-  { id: 'todo', name: '待办事项', desc: '任务管理', icon: '✅', bg: '#eaf4fe', path: '/pages/todo/todo' },
-  { id: 'calendar', name: '日历提醒', desc: '事件安排', icon: '📅', bg: '#fef6e4', path: '/pages/calendar/calendar' },
-  { id: 'items', name: '物品管理', desc: '过期提醒', icon: '📦', bg: '#e8faf0', path: '/pages/items/items' },
-  { id: 'dailycheckin', name: '每日打卡', desc: '习惯追踪', icon: '✅', bg: '#eaf4fe', path: '/pages/dailyCheckin/dailyCheckin' },
-  { id: 'countdown', name: '倒数日', desc: '纪念日提醒', icon: '📅', bg: '#fef6e4', path: '/pages/countDown/countDown' },
-  { id: 'random', name: '随机决定', desc: '抽签 / 午餐', icon: '🎲', bg: '#e8faf0', path: '/pages/randomDecision/randomDecision' },
-  { id: 'wagecal', name: '工资计算', desc: '目标薪资规划', icon: '💰', bg: '#ffedea', path: '/pages/wagecal/wageCal' },
-  { id: 'setting', name: '设置', desc: '备份 / 提醒', icon: '⚙️', bg: '#e0e7ff', path: '/pages/settings/settings' }
+  { id: 'todo', name: '待办', desc: '温柔清单', icon: '📝', bg: '#FFF0E6', path: '/pages/todo/todo' },
+  { id: 'calendar', name: '日历', desc: '音律日程', icon: '📅', bg: '#F0E9FF', path: '/pages/calendar/calendar' },
+  { id: 'items', name: '物品', desc: '过期关怀', icon: '🎁', bg: '#FFEDE6', path: '/pages/items/items' },
+  { id: 'dailycheckin', name: '习惯', desc: '每日练习', icon: '🎵', bg: '#E6F4EA', path: '/pages/dailyCheckin/dailyCheckin' },
+  { id: 'countdown', name: '纪念日', desc: '期待的日子', icon: '🎂', bg: '#F9E6F0', path: '/pages/countDown/countDown' },
+  { id: 'random', name: '随机', desc: '今天吃什么', icon: '🍜', bg: '#FFF0D6', path: '/pages/randomDecision/randomDecision' },
+  { id: 'wagecal', name: '薪资', desc: '理想音符', icon: '💰', bg: '#E8F0FF', path: '/pages/wagecal/wageCal' },
+  { id: 'unit', name: '换算', desc: '度量韵律', icon: '📏', bg: '#DFF2F0', path: '/pages/unitConvertor/unitConvertor' },
+  { id: 'setting', name: '设置', desc: '调音台', icon: '⚙️', bg: '#EEE8FF', path: '/pages/settings/settings' }
 ]
 
-// ---------- 数据 ----------
+// 数据与搜索（与之前逻辑一致，但使用统一 dataManager）
 const allTodos = ref([])
-const allEvents = ref([])      // 纪念日
-const allItems = ref([])       // 物品过期
-const allTasks = ref([])       // 打卡任务
-
+const allEvents = ref([])
+const allItems = ref([])
+const allTasks = ref([])
 const pendingTodos = computed(() => allTodos.value.filter(t => !t.done))
-const todoCounts = computed(() => ({
-  pending: pendingTodos.value.length
-}))
+const todoCounts = computed(() => ({ pending: pendingTodos.value.length }))
 const todayStr8 = formatDate(null, 'YYYY-MM-DD')
 const todayEventCount = computed(() => {
   let cnt = 0
-  // 待办中今天截止的
-  cnt += allTodos.value.filter(t => t.dueDate && t.dueDate.startsWith(todayStr8)).length
-  // 今日到期的物品
+  cnt += allTodos.value.filter(t => t.dueDate === todayStr8).length
   cnt += allItems.value.filter(i => i.expiryDate === todayStr8).length
-  // 今日纪念日
   cnt += allEvents.value.filter(e => e.date === todayStr8).length
   return cnt
 })
-const urgentItems = computed(() =>
-  allItems.value
-    .filter(i => i.expiryDate && daysFromNow(i.expiryDate) <= 7 && daysFromNow(i.expiryDate) >= 0)
-    .sort((a, b) => a.expiryDate - b.expiryDate)
+const urgentItems = computed(() => 
+  allItems.value.filter(i => i.expiryDate && daysFromNow(i.expiryDate) <= 7 && daysFromNow(i.expiryDate) >= 0)
 )
 const expiryCount = computed(() => urgentItems.value.length)
-
 const priorityColor = (p) => (PRIORITY_MAP[p] || PRIORITY_MAP.medium).color
 const formatD = (ts) => formatDate(ts, 'MM-DD')
 const getExpiry = (ts) => getExpiryStatus(ts)
 
-// ---------- 搜索 ----------
-const keyword = ref('')
-const searchResults = ref([])
-
 function loadAllData() {
-  // 从本地存储加载各模块数据
   const todoStore = uni.getStorageSync('todoList')
   allTodos.value = todoStore?.todos || []
   const eventStore = uni.getStorageSync('countdownData')
@@ -194,310 +177,64 @@ function loadAllData() {
   allTasks.value = taskStore?.tasks || []
 }
 
-function doSearch() {
-  if (!keyword.value.trim()) {
-    searchResults.value = []
-    return
-  }
-  const kw = keyword.value.trim().toLowerCase()
-  const results = []
-
-  // 搜索待办事项
-  allTodos.value.forEach(t => {
-    if (t.title?.toLowerCase().includes(kw)) {
-      results.push({
-        typeName: '待办',
-        typeColor: '#e74c3c',
-        name: t.title,
-        info: t.dueDate ? `截止 ${t.dueDate}` : '无截止日期',
-        path: '/pages/todo/todo',
-        id: t._id
-      })
-    }
-  })
-  // 搜索物品
-  allItems.value.forEach(i => {
-    if (i.name?.toLowerCase().includes(kw)) {
-      results.push({
-        typeName: '物品',
-        typeColor: '#e67e22',
-        name: i.name,
-        info: `过期 ${i.expiryDate || '未设置'}`,
-        path: '/pages/items/items?tab=expiry',
-        id: i._id
-      })
-    }
-  })
-  // 搜索纪念日
-  allEvents.value.forEach(e => {
-    if (e.name?.toLowerCase().includes(kw)) {
-      results.push({
-        typeName: '纪念日',
-        typeColor: '#f39c12',
-        name: e.name,
-        info: `日期 ${e.date}`,
-        path: '/pages/countdown/countdown',
-        id: e.id
-      })
-    }
-  })
-  // 搜索打卡任务
-  allTasks.value.forEach(t => {
-    if (t.name?.toLowerCase().includes(kw)) {
-      results.push({
-        typeName: '打卡',
-        typeColor: '#2ecc71',
-        name: t.name,
-        info: t.remindTime ? `提醒 ${t.remindTime}` : '无提醒',
-        path: '/pages/dailycheckin/dailyCheckin',
-        id: t.id
-      })
-    }
-  })
-
+// 搜索功能
+const keyword = ref('')
+const searchResults = ref([])
+async function doSearch() {
+  if (!keyword.value.trim()) { searchResults.value = []; return }
+  const kw = keyword.value.trim()
+  const results = await globalSearch(kw)
   searchResults.value = results
 }
+function clearSearch() { keyword.value = ''; searchResults.value = [] }
+function goToDetail(item) { uni.navigateTo({ url: item.path }) }
+function navTo(path) { uni.switchTab({ url: path, fail: () => uni.navigateTo({ url: path }) }) }
 
-function clearSearch() {
-  keyword.value = ''
-  searchResults.value = []
-}
-
-function goToDetail(item) {
-  // 跳转到对应页面，如果页面需要定位具体项，可以传递参数
-  uni.navigateTo({ url: item.path })
-}
-
-// ---------- 加载数据 & 生命周期 ----------
-onShow(() => {
-  loadAllData()
-})
-
-// 导航
-function navTo(path) {
-  uni.switchTab({ url: path, fail: () => uni.navigateTo({ url: path }) })
-}
+onShow(() => { loadAllData() })
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  background: #f2f6fc;
-  padding-bottom: 120rpx;
+@import '/styles/music-theme.scss';
+
+.music-home { padding-bottom: 100rpx; }
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #EADBC6 0%, #D9CBB8 100%);
+  padding: 80rpx 32rpx 60rpx;
+  border-radius: 0 0 60rpx 60rpx;
+  overflow: hidden;
 }
-/* 头部 */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 60rpx 32rpx 24rpx;
-  background: linear-gradient(135deg, #4A90D9 0%, #357abf 100%);
-}
-.greeting {
-  display: block;
-  font-size: 38rpx;
-  font-weight: 600;
-  color: #fff;
-}
-.date-text {
-  display: block;
-  font-size: 24rpx;
-  color: rgba(255,255,255,0.8);
-  margin-top: 6rpx;
-}
-.app-title {
-  font-size: 28rpx;
-  color: rgba(255,255,255,0.7);
-}
-/* 搜索条 */
-.search-bar {
-  background: #fff;
-  margin: 20rpx 24rpx;
-  border-radius: 48rpx;
-  padding: 12rpx 24rpx;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
-}
-.search-input {
-  flex: 1;
-  font-size: 28rpx;
-  padding: 12rpx 0;
-}
-.search-icon, .search-clear {
-  font-size: 36rpx;
-  padding: 0 8rpx;
-  color: #8a9bb0;
-}
-/* 搜索结果 */
-.search-result {
-  margin: 0 24rpx 20rpx;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-  max-height: 500rpx;
-  overflow-y: auto;
-}
-.result-title {
-  font-size: 26rpx;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 16rpx;
-}
-.result-item {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #f0f4f8;
-}
-.result-type {
-  font-size: 22rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 28rpx;
-  color: white;
-}
-.result-content {
-  flex: 1;
-}
-.result-name {
-  font-size: 28rpx;
-  font-weight: 500;
-  display: block;
-}
-.result-info {
-  font-size: 22rpx;
-  color: #8a9bb0;
-}
-.search-empty {
-  text-align: center;
-  margin: 20rpx;
-  color: #8a9bb0;
-}
-/* 以下复用原有样式（概览卡、工具网格等保持不变） */
-.overview-card {
-  display: flex;
-  background: #fff;
-  border-radius: 20rpx;
-  margin: 0 24rpx;
-  box-shadow: 0 4rpx 24rpx rgba(74,144,217,0.15);
-  padding: 32rpx 0;
-}
-.overview-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.ov-num {
-  font-size: 52rpx;
-  font-weight: 700;
-  line-height: 1;
-}
-.ov-label {
-  font-size: 24rpx;
-  color: #8a9bb0;
-  margin-top: 8rpx;
-}
-.ov-divider {
-  width: 1rpx;
-  background: #eef2f7;
-  margin: 8rpx 0;
-}
-.section-title {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #8a9bb0;
-  padding: 32rpx 32rpx 16rpx;
-}
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20rpx;
-  padding: 0 24rpx;
-}
-.tool-item {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 24rpx 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.tool-icon-wrap {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 20rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16rpx;
-}
-.tool-icon {
-  font-size: 40rpx;
-}
-.tool-name {
-  font-size: 26rpx;
-  font-weight: 600;
-  color: #2c3e50;
-}
-.tool-desc {
-  font-size: 20rpx;
-  color: #aab;
-  margin-top: 4rpx;
-}
-.section-card {
-  background: #fff;
-  border-radius: 20rpx;
-  margin: 20rpx 24rpx;
-  padding: 28rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
-}
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18rpx;
-}
-.section-title-inline {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #2c3e50;
-}
-.section-more {
-  font-size: 24rpx;
-  color: #4A90D9;
-}
-.quick-todo-item {
-  display: flex;
-  align-items: center;
-  padding: 14rpx 0;
-  border-bottom: 1rpx solid #f0f4f8;
-}
-.priority-dot {
-  width: 12rpx;
-  height: 12rpx;
-  border-radius: 50%;
-  margin-right: 16rpx;
-}
-.quick-todo-text {
-  flex: 1;
-  font-size: 28rpx;
-  color: #2c3e50;
-}
-.quick-todo-date {
-  font-size: 22rpx;
-  color: #aab;
-}
-.expiry-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 14rpx 0;
-  border-bottom: 1rpx solid #f0f4f8;
-}
-.expiry-name {
-  font-size: 28rpx;
-}
+/* 其余样式与之前音乐风格一致，但使用变量 */
+.hero-content { position: relative; z-index: 2; }
+.greeting-box .greeting { font-size: 44rpx; font-weight: 600; color: #4F3B2C; }
+.song-quote { font-size: 24rpx; color: #7A6250; margin-top: 12rpx; }
+.date-text { font-size: 28rpx; color: #8F735C; background: rgba(255,245,225,0.6); padding: 8rpx 24rpx; border-radius: 60rpx; backdrop-filter: blur(8px); }
+.wave { position: absolute; bottom: 20rpx; left: 32rpx; display: flex; gap: 8rpx; }
+.wave-bar { width: 6rpx; height: 30rpx; background: rgba(79,59,44,0.3); border-radius: 6rpx; animation: wave 1.2s infinite ease-in-out; }
+@keyframes wave { 0%,100% { height: 16rpx; } 50% { height: 40rpx; } }
+.search-wrapper { margin: -32rpx 24rpx 0; position: relative; z-index: 10; }
+.search-box { background: $primary-card; backdrop-filter: blur(20px); border-radius: 60rpx; padding: 16rpx 24rpx; display: flex; align-items: center; gap: 16rpx; box-shadow: $card-shadow; }
+.search-icon { font-size: 36rpx; color: #B59A82; }
+.search-input { flex: 1; font-size: 28rpx; }
+.search-clear { font-size: 32rpx; color: #B59A82; }
+.stats-card { background: $primary-card; backdrop-filter: blur(20px); border-radius: 40rpx; margin: 24rpx; padding: 28rpx 0; display: flex; justify-content: space-around; box-shadow: $card-shadow; }
+.stat-item { text-align: center; flex: 1; }
+.stat-num { font-size: 52rpx; font-weight: 700; }
+.stat-label { font-size: 24rpx; color: $text-muted; margin-top: 8rpx; display: block; }
+.stat-divider { width: 1rpx; background: $border-light; height: 60rpx; }
+.section-title { padding: 24rpx 32rpx 12rpx; font-size: 32rpx; font-weight: 600; color: $text-main; }
+.tool-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20rpx; padding: 0 24rpx; }
+.tool-card { background: #FFFEF9; border-radius: 32rpx; padding: 28rpx 16rpx; text-align: center; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.02); }
+.tool-icon { width: 88rpx; height: 88rpx; border-radius: 44rpx; display: inline-flex; align-items: center; justify-content: center; font-size: 48rpx; margin-bottom: 20rpx; }
+.tool-name { font-size: 28rpx; font-weight: 500; color: $text-main; }
+.tool-desc { font-size: 22rpx; color: #B59A82; }
+.music-card { background: $primary-card; backdrop-filter: blur(20px); border-radius: 40rpx; margin: 20rpx 24rpx; padding: 24rpx 28rpx; box-shadow: $card-shadow; }
+.card-header { display: flex; justify-content: space-between; margin-bottom: 20rpx; }
+.card-title { font-size: 30rpx; font-weight: 600; color: #7A624E; }
+.card-more { font-size: 24rpx; color: #C5A992; }
+.todo-item, .expiry-item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid $border-light; }
+.todo-dot { width: 12rpx; height: 12rpx; border-radius: 12rpx; margin-right: 20rpx; }
+.todo-text { flex: 1; font-size: 28rpx; color: $text-main; }
+.todo-date, .expiry-tag { font-size: 24rpx; color: $text-muted; }
+.footer-note { text-align: center; font-size: 24rpx; color: #CBB9AB; margin: 40rpx 0; }
 </style>

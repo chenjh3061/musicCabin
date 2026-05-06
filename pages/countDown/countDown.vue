@@ -1,16 +1,14 @@
 <template>
   <view class="page">
-    <view class="header">
-      <view class="header-left">
-        <text class="greeting">倒数日</text>
-        <text class="date-text">记录重要日子</text>
-      </view>
-      <view class="header-right"><text class="app-title">纪念日</text></view>
+    <view class="music-hero">
+      <text class="hero-icon">⏳</text>
+      <text class="hero-title">纪念日</text>
+      <text class="hero-sub">重要日子 · 温暖回忆</text>
     </view>
 
-    <view class="card">
-      <view class="card-title">
-        📅 我的纪念日
+    <view class="music-card">
+      <view class="card-header">
+        <text class="card-title">📅 我的纪念日</text>
         <text class="add-btn" @click="addEvent">+ 添加</text>
       </view>
       <view v-for="ev in events" :key="ev.id" class="event-item">
@@ -24,8 +22,12 @@
         </view>
         <text class="del-icon" @click="deleteEvent(ev.id)">🗑️</text>
       </view>
-      <view v-if="events.length === 0" class="empty-tip">暂无纪念日，点击 + 添加</view>
+      <view v-if="events.length === 0" class="empty-tip">
+        暂无纪念日，点击 + 添加
+      </view>
     </view>
+
+    <view class="music-footer">♫ 每一个日子都值得期待 ♫</view>
   </view>
 </template>
 
@@ -41,8 +43,7 @@ function loadData() {
   } else {
     events.value = [
       { id: '1', name: '新年', date: '2026-01-01' },
-      { id: '2', name: '生日', date: '2025-12-25' },
-	  { id: '3', name: '动物园', date: '2022-06-05'}
+      { id: '2', name: '生日', date: '2025-12-25' }
     ]
     saveData()
   }
@@ -55,12 +56,12 @@ function saveData() {
 
 function computeDays() {
   const today = new Date()
-  today.setHours(0,0,0,0)
+  today.setHours(0, 0, 0, 0)
   events.value.forEach(ev => {
     const target = new Date(ev.date)
-    target.setHours(0,0,0,0)
-    const diff = Math.ceil((target - today) / (1000*3600*24))
-    ev.daysRemaining = diff >= 0 ? diff : `已过${-diff}天`
+    target.setHours(0, 0, 0, 0)
+    const diff = Math.ceil((target - today) / (1000 * 3600 * 24))
+    ev.daysRemaining = diff >= 0 ? diff : `已过${-diff}`
   })
 }
 
@@ -101,77 +102,62 @@ onMounted(() => { loadData() })
 </script>
 
 <style scoped>
-/* 必须包含这些基础样式 */
 .page {
   min-height: 100vh;
-  background: #f2f6fc;
-  padding-bottom: 80rpx;
+  background: #F0F4FA;
+  padding-bottom: 40rpx;
 }
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 60rpx 32rpx 24rpx;
-  background: linear-gradient(135deg, #4A90D9 0%, #357abf 100%);
+
+.hero-icon {
+  font-size: 64rpx;
+  display: block;
+  margin-bottom: 12rpx;
 }
-.greeting {
-  font-size: 38rpx;
+.hero-title {
+  font-size: 44rpx;
   font-weight: 600;
-  color: #fff;
+  letter-spacing: 4rpx;
 }
-.date-text {
+.hero-sub {
   font-size: 24rpx;
-  color: rgba(255,255,255,0.8);
-  margin-top: 6rpx;
+  opacity: 0.9;
+  margin-top: 8rpx;
 }
-.app-title {
-  font-size: 28rpx;
-  color: rgba(255,255,255,0.7);
-}
-.card {
-  background: #fff;
-  border-radius: 24rpx;
-  margin: 20rpx 24rpx;
-  padding: 32rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.04);
-}
-.card-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 24rpx;
+
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24rpx;
+}
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2C3E50;
 }
 .add-btn {
   font-size: 26rpx;
-  color: #4A90D9;
-  background: #eaf4fe;
-  padding: 8rpx 20rpx;
-  border-radius: 28rpx;
+  color: #5D9BEC;
+  background: #E8F0FE;
+  padding: 8rpx 24rpx;
+  border-radius: 60rpx;
 }
-.empty-tip {
-  text-align: center;
-  color: #aab5c2;
-  padding: 60rpx 0;
-}
-/* 事件项样式 */
+
 .event-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 24rpx 0;
-  border-bottom: 1rpx solid #f0f4f8;
+  border-bottom: 1rpx solid #E4E9F2;
 }
 .event-name {
   font-size: 30rpx;
   font-weight: 500;
-  color: #2c3e50;
+  color: #2C3E50;
 }
 .event-date {
   font-size: 24rpx;
-  color: #8a9bb0;
+  color: #95A5A6;
   margin-left: 16rpx;
 }
 .event-days {
@@ -182,15 +168,21 @@ onMounted(() => { loadData() })
 .days-num {
   font-size: 36rpx;
   font-weight: 700;
-  color: #e67e22;
+  color: #5D9BEC;
 }
 .days-label {
   font-size: 24rpx;
-  color: #8a9bb0;
+  color: #95A5A6;
 }
 .del-icon {
-  font-size: 36rpx;
-  color: #f29b9b;
+  font-size: 40rpx;
+  color: #E74C3C;
   padding: 8rpx;
+  margin-left: 20rpx;
+}
+.empty-tip {
+  text-align: center;
+  color: #95A5A6;
+  padding: 60rpx 0;
 }
 </style>

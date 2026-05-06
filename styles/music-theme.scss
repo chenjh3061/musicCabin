@@ -1,0 +1,56 @@
+/* 音乐舒缓主题 - 全局变量与混合 */
+$primary-light: #FDF9F5;
+$primary-card: rgba(255,252,248,0.96);
+$card-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.04), 0 2rpx 6rpx rgba(0, 0, 0, 0.02);
+$text-main: #5C4A3A;
+$text-muted: #8E7A6B;
+$accent: #D6B8A8;
+$border-light: #F0E4D8;
+$btn-bg: #EADBC6;
+$btn-text: #6F5540;
+
+/* 全局页面背景 */
+page {
+  background: $primary-light;
+  font-family: -apple-system, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+/* 通用卡片样式 */
+.music-card {
+  background: $primary-card;
+  backdrop-filter: blur(20px);
+  border-radius: 48rpx;
+  margin: 24rpx;
+  padding: 32rpx;
+  box-shadow: $card-shadow;
+  transition: all 0.2s;
+}
+
+/* 通用按钮 */
+.music-btn {
+  background: $btn-bg;
+  color: $btn-text;
+  border-radius: 60rpx;
+  font-size: 28rpx;
+  padding: 20rpx;
+  width: 60%;
+  margin: 16rpx auto;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+/* 通用输入框 */
+.music-input, textarea, picker {
+  background: #F8F2EA;
+  border-radius: 32rpx;
+  padding: 16rpx 24rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+/* 分割线 */
+.music-divider {
+  height: 1rpx;
+  background: $border-light;
+  margin: 20rpx 0;
+}
