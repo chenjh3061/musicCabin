@@ -140,7 +140,7 @@ const tools = [
   { id: 'random', name: '随机', desc: '今天吃什么', icon: '🍜', bg: '#E0F5F5', path: '/pages/randomDecision/randomDecision' },
   { id: 'wagecal', name: '薪资', desc: '理想音符', icon: '💰', bg: '#DFF0FB', path: '/pages/wagecal/wageCal' },
   { id: 'unit', name: '换算', desc: '度量韵律', icon: '📏', bg: '#DDF3F0', path: '/pages/unitConvertor/unitConvertor' },
-   { id: 'idong', name: '爱动', desc: '度量韵律', icon: '📏', bg: '#DDF3F0', path: '/pages/unitConvertor/unitConvertor' },
+   { id: 'idong', name: '爱动', desc: '度量韵律', icon: '❤', bg: '#DDF3F0', path: '/pages/idong/idong' },
   { id: 'setting', name: '设置', desc: '调音台', icon: '⚙️', bg: '#E3EFFA', path: '/pages/settings/settings' }
 ]
 
